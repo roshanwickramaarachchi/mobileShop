@@ -73,7 +73,7 @@ const signout = (dispatch) => async () => {
   await AsyncStorage.removeItem('token');
   await mobileShopApi.get('/api/v1/auth/logout');
   dispatch({type: 'signout'});
-  navigate('loginFlow');
+  navigate('Signin');
 };
 
 export const {Provider, Context} = createDataContext(
