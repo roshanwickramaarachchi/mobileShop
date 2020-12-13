@@ -1,10 +1,23 @@
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
+import {Button} from 'react-native-elements';
 
-const SearchScreen = () => {
-  return <Text style={{fontSize: 48}}>SearchScreen</Text>;
+const ShopSearchScreen = ({navigation}) => {
+  return (
+    <View>
+      <Text style={styles.headerFont}>ShopSearchScreen</Text>
+      <Button
+        title="search phone shop"
+        onPress={() => navigation.navigate('ShopSearch')}
+      />
+      <Button
+        title="search phones"
+        onPress={() => navigation.navigate('PhoneSearch')}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({});
 
-export default SearchScreen;
+export default ShopSearchScreen;

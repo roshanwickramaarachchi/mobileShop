@@ -72,7 +72,9 @@ const HomeScreen = ({navigation}) => {
   //*******************************************************************
   return (
     <View style={styles.container}>
+      {/*swiper image title */}
       <Text style={styles.headerFont}>Mobile Shops</Text>
+      {/* swiper shop images */}
       <View style={{flex: 1}}>
         <TouchableOpacity onPress={() => navigation.navigate('Search')}>
           <View style={styles.sliderContainer}>
@@ -103,6 +105,7 @@ const HomeScreen = ({navigation}) => {
         </TouchableOpacity>
       </View>
       
+      {/* horizontal flat list phones images */}
       <View style={{flex: 1}}>
         <Text style={styles.headerFont}>mobile phones</Text>
         <FlatList

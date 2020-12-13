@@ -9,11 +9,15 @@ import SignupScreen from './src/screens/SignupScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import SearchScreen from './src/screens/SearchScreen';
+import PhoneSearchScreen from './src/screens/PhoneSearchScreen';
+import ShopSearchScreen from './src/screens/ShopSearchScreen';
+import ShopScreen from './src/screens/ShopScreen';
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
 import ResolveAuthscreen from './src/screens/ResolveAuthScreen';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+
 
 const switchNavigator = createSwitchNavigator({
   ResolveAuth: ResolveAuthscreen, //this page help to go to home page without seening login page
@@ -23,7 +27,9 @@ const switchNavigator = createSwitchNavigator({
   }),
   mainFlow: createBottomTabNavigator({
     Home: {
-      screen: createStackNavigator({Home: HomeScreen}),
+      screen: createStackNavigator({
+        Home: HomeScreen,
+      }),
       navigationOptions: {
         tabBarIcon: ({tintColor}) => (
           <View>
@@ -44,7 +50,12 @@ const switchNavigator = createSwitchNavigator({
       },
     },
     Search: {
-      screen: SearchScreen,
+      screen: createStackNavigator({
+        Search: SearchScreen,
+        ShopSearch: ShopSearchScreen,
+        PhoneSearch: PhoneSearchScreen,
+        Shop:ShopScreen,
+      }),
       navigationOptions: {
         tabBarIcon: ({tintColor}) => (
           <View>
