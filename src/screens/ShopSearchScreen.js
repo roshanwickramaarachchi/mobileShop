@@ -15,12 +15,13 @@ const ShopSearchScreen = () => {
     try {
       const response = await mobileShopApi.get('/api/v1/bootcamps', {
         params: {
-          homeTown: searchTerm,
+          town: searchTerm,
         },
       });
       setResults(response.data.data);
     } catch (err) {
       setErrorMessage('Something went wrong');
+      console.log(err);
     }
   };
   //console.log(results);
@@ -29,6 +30,7 @@ const ShopSearchScreen = () => {
   //the is no parameter pass, so all shop details can get
   useEffect(() => {
     searchApi();
+    
   }, []);
 
   return (

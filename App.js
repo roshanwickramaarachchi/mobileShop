@@ -12,6 +12,8 @@ import SearchScreen from './src/screens/SearchScreen';
 import PhoneSearchScreen from './src/screens/PhoneSearchScreen';
 import ShopSearchScreen from './src/screens/ShopSearchScreen';
 import ShopScreen from './src/screens/ShopScreen';
+import PhoneScreen from './src/screens/PhoneScreen';
+import PhoneListScreen from './src/screens/PhoneListScreen';
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
 import ResolveAuthscreen from './src/screens/ResolveAuthScreen';
@@ -54,7 +56,9 @@ const switchNavigator = createSwitchNavigator({
         Search: SearchScreen,
         ShopSearch: ShopSearchScreen,
         PhoneSearch: PhoneSearchScreen,
-        Shop:ShopScreen,
+        Shop: ShopScreen,
+        PhoneList: PhoneListScreen,
+        Phone: PhoneScreen,
       }),
       navigationOptions: {
         tabBarIcon: ({tintColor}) => (

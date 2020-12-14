@@ -1,15 +1,17 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 
-const ResultsDetail = ({result}) => {
-  //console.log(result.image);
+const PhonesResultsDetail = ({result}) => {
+  //console.log(result.brand);
   return (
-    // individual shop in flat list
+    // individual phone in flat list
     <View style={styles.container}>
       <Image style={styles.image} source={{uri: result.image}} />
       <View style={styles.textContainer}>
-        <Text style={styles.fontShopName}>Name: {result.name}</Text>
-        <Text>Town: {result.town}</Text>
+        <Text style={styles.fontPhoneBrand}>Brand: {result.brand}</Text>
+        <Text>Model: {result.model}</Text>
+        <Text>Edition: {result.edition}</Text>
+        <Text>Price Rs:{result.price}</Text>
         {/* <Text>
         {result.rating} Stars, {result.review_count} Reviews
       </Text> */}
@@ -36,10 +38,10 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 4,
   },
-  fontShopName: {
+  fontPhoneBrand: {
     fontWeight: 'bold',
   },
   
 });
 
-export default ResultsDetail;
+export default PhonesResultsDetail;

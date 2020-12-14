@@ -10,14 +10,15 @@ const ResultList = ({results, navigation}) => {
       {/*all the shop list */}
       <FlatList
         data={results}
-        keyExtractor={(result) => result._id} // _id use as id
+        keyExtractor={(result) => result.id} // _id use as id
         renderItem={({item}) => {
           return (
             <TouchableOpacity
               onPress={() => navigation.navigate('Shop', {id: item._id})}>
+              {/* onPress={() => console.log(item._id)}> */}
               <ResultsDetail result={item} />
             </TouchableOpacity>
-          )
+          );
         }}
       />
     </View>
