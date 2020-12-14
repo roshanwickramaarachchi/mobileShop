@@ -29,7 +29,7 @@ const PhoneListScreen = ({navigation}) => {
     return null;
   }
 
-  console.log(phoneResult);
+  //console.log(phoneResult);
 
   return (
     <View>

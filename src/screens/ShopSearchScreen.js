@@ -2,15 +2,14 @@ import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import SearchBar from '../components/SearchBar';
 import mobileShopApi from './../api/mobileShopApi';
-import {Button} from 'react-native-elements';
-import ResultList from '../components/ResultsList';
+import ResultsList from '../components/ResultsList';
 
 const ShopSearchScreen = () => {
   const [term, setTerm] = useState('');
   const [results, setResults] = useState([]); // results= shops
   const [errorMessage, setErrorMessage] = useState('');
 
-  // get data from Api aad data set to 'result'
+  // get data from Api and data set to 'result'
   const searchApi = async (searchTerm) => {
     try {
       const response = await mobileShopApi.get('/api/v1/bootcamps', {
@@ -30,7 +29,6 @@ const ShopSearchScreen = () => {
   //the is no parameter pass, so all shop details can get
   useEffect(() => {
     searchApi();
-    
   }, []);
 
   return (
@@ -45,7 +43,7 @@ const ShopSearchScreen = () => {
       {/* error messsage indicate in seachbar bellow */}
       {errorMessage ? <Text>{errorMessage}</Text> : null}
 
-      <ResultList results={results} />
+      <ResultsList results={results} />
     </View>
   );
 };
