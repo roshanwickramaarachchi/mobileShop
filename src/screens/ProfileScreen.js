@@ -104,6 +104,7 @@ const ProfileScreen = ({navigation}) => {
   // delete logged user created shop
   const deleteShop = async () => {
     try {
+      setIsLoading(true);
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'delete',
@@ -115,8 +116,10 @@ const ProfileScreen = ({navigation}) => {
       //console.log(response);
       console.log('success delete shop');
       setShopData(null);
+      setIsLoading(false);
     } catch (err) {
       console.log('api call deleteShop ' + err);
+      setIsLoading(false);
     }
   };
 
