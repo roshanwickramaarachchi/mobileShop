@@ -17,8 +17,10 @@ import {BASE_URL} from '../../constants/constants';
 //import ImagePicker from 'react-native-image-picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImgToBase64 from 'react-native-image-base64';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const ShopCreateScreen = ({navigation}) => {
+  const [isLoading, setIsLoading] = useState(false);
   //const [token, setToken] = useState('');
   const [image, setImage] = useState(); // this is encorded image data
   const [name, setName] = useState('');
@@ -32,6 +34,7 @@ const ShopCreateScreen = ({navigation}) => {
   // create shop using api(post data to database)
   const createShop = async () => {
     try {
+      setIsLoading(true);
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'post',
@@ -54,8 +57,10 @@ const ShopCreateScreen = ({navigation}) => {
       //console.log(response.data);
       console.log('success create shop');
       navigation.navigate('Profile');
+      setIsLoading(false);
     } catch (err) {
       console.log('api call createShop ' + err);
+      setIsLoading(false);
     }
   };
 
@@ -218,6 +223,12 @@ const ShopCreateScreen = ({navigation}) => {
   //************************************************************************************ */
   return (
     <View>
+      {/* loading-spinner-overlay, until post shop data to database this will run */}
+      <Spinner
+        visible={isLoading}
+        textContent={'Creating...'}
+        textStyle={styles.spinnerTextStyle}
+      />
       <ScrollView>
         {/* <ShopForm
           onSubmit={(image, name) => {
@@ -289,6 +300,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 10,
     marginLeft: 5,
+  },
+  spinnerTextStyle: {
+    color: '#FFF',
   },
 });
 

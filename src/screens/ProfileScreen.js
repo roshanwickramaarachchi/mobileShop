@@ -1,5 +1,13 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {StyleSheet, Text, Button, ScrollView, Image, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  Button,
+  ScrollView,
+  Image,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import {Context as AuthContext} from '../context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {Context as ShopContext} from '../context/ShopContext';
@@ -9,9 +17,10 @@ import {NavigationEvents} from 'react-navigation';
 import mobileShopApi from '../api/mobileShopApi';
 import {BASE_URL} from '../../constants/constants';
 import axios from 'axios';
-
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const ProfileScreen = ({navigation}) => {
+  const [isLoading, setIsLoading] = useState(true);
   const {signout} = useContext(AuthContext);
   // const [userId, setUserId] = useState(); // using token get logged user id
   const [shopData, setShopData] = useState();
@@ -59,11 +68,11 @@ const ProfileScreen = ({navigation}) => {
   //   }
   // };
   // // console.log(shopData);
-  
 
   // get relevent logged user created shop data
   const getShopData = async () => {
     try {
+      setIsLoading(true);
       var token = await AsyncStorage.getItem('token'); // get Token from async storage
       // calling api get logged user data using token
       const userData = await axios({
@@ -82,10 +91,12 @@ const ProfileScreen = ({navigation}) => {
           user: userData.data.data._id,
         },
       });
-      setShopData(response.data.data[0]);      
+      setShopData(response.data.data[0]);
       console.log('success get shop, shop name: ' + response.data.data[0].name);
+      setIsLoading(false);
     } catch (err) {
       console.log('api call getShopData ' + err);
+      setIsLoading(false);
     }
   };
   //console.log('shop name ' + shopData.name);
@@ -117,10 +128,22 @@ const ProfileScreen = ({navigation}) => {
   }, []);
 
   // using this function call multiple fuction at sametime
-  
 
   return (
     <ScrollView>
+      {/* {isLoading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size="large" color={'#0000ff'} />
+        </View>
+      ) : null} */}
+
+      {/* loading-spinner-overlay, until get shop data from database this will run */}
+      <Spinner
+        visible={isLoading}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
+
       {/* <NavigationEvents onWillFocus={getLoggedUserDataFromToken} />  */}
       {/* when navigate to the screen every time getShopData(userId) function calle */}
       {/* <NavigationEvents onDidBlur={() => getShopData(userId)} /> */}
@@ -200,6 +223,9 @@ const styles = StyleSheet.create({
   },
   fontDetails: {
     paddingLeft: 10,
+  },
+  spinnerTextStyle: {
+    color: '#FFF',
   },
 });
 

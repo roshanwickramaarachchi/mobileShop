@@ -15,8 +15,10 @@ import {BASE_URL} from '../../constants/constants';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImgToBase64 from 'react-native-image-base64';
 import mobileShopApi from '../api/mobileShopApi';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const ShopCreateScreen = ({navigation}) => {
+  const [isLoading, setIsLoading] = useState(false);
   ///const [shopData, setShopData] = useState(); // shop data
   //const [token, setToken] = useState('');
   const [image, setImage] = useState(); // this is encorded image data
@@ -32,6 +34,7 @@ const ShopCreateScreen = ({navigation}) => {
   // get relevent logged user created shop data
   const getShopData = async () => {
     try {
+      setIsLoading(true);
       var token = await AsyncStorage.getItem('token'); // get Token from async storage
       // calling api get logged user data using token
       const userData = await axios({
@@ -57,8 +60,10 @@ const ShopCreateScreen = ({navigation}) => {
       setDescription(response.data.data[0].description);
       setShopId(response.data.data[0]._id);
       console.log('success get shop, shop name: ' + response.data.data[0].name);
+      setIsLoading(false);
     } catch (err) {
       console.log('api call ' + err);
+      setIsLoading(false);
     }
   };
   //console.log('shop name ' + shopData.name);
@@ -95,6 +100,7 @@ const ShopCreateScreen = ({navigation}) => {
   // edit shop details using api(put data to database)
   const editShop = async () => {
     try {
+      setIsLoading(true);
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'put',
@@ -117,8 +123,10 @@ const ShopCreateScreen = ({navigation}) => {
       //console.log(response.data.data.name); 
       console.log('success edit shop, shop name: ' + response.data.data.name);
       navigation.navigate('Profile');
+      setIsLoading(false);
     } catch (err) {
       console.log('api call ' + err);
+      setIsLoading(false);
     }
   };
 
@@ -200,6 +208,14 @@ const ShopCreateScreen = ({navigation}) => {
 
   return (
     <View>
+
+      {/* loading-spinner-overlay, until get shop data and edited data put to database, this will run */}
+      <Spinner
+        visible={isLoading}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
+
       <ScrollView>
         <Image style={styles.image} source={{uri: image}} />
         <View>
