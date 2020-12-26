@@ -17,8 +17,6 @@ const ShopScreen = ({navigation}) => {
   const id = navigation.getParam('id'); // this id is tuched, shop id
   const [shopResult, setShopResult] = useState(null); // shopResult = one shop data
 
-  
-
   // get selected shop data using api
   const getShopResult = async (id) => {
     try {

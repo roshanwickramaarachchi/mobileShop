@@ -3,7 +3,7 @@ import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import PhonesResultsDetail from './PhonesResultsDetail';
 import {withNavigation} from 'react-navigation';
 
-const ShopResultsList = ({results, navigation}) => {
+const PhoneResultsList = ({results, navigation}) => {
   console.log(results.length);
   return (
     <View>
@@ -28,4 +28,4 @@ const ShopResultsList = ({results, navigation}) => {
 const styles = StyleSheet.create({});
 
 //withNavigation is help navigate, without pass prop through between every pages
-export default withNavigation(ShopResultsList);
+export default withNavigation(PhoneResultsList);

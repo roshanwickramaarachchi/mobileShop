@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import SearchBar from '../components/SearchBar';
 import mobileShopApi from './../api/mobileShopApi';
-import ShopResultsList from '../components/ShopResultsList';
+import PhoneResultsList from '../components/PhoneResultsList';
 
 const PhoneSearchScreen = () => {
 
@@ -45,7 +45,7 @@ const PhoneSearchScreen = () => {
       {/* error messsage indicate in seachbar bellow */}
       {errorMessage ? <Text>{errorMessage}</Text> : null}
 
-      <ShopResultsList results={results} />
+      <PhoneResultsList results={results} />
     </View>
   );
 };

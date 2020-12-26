@@ -14,12 +14,13 @@ import ShopSearchScreen from './src/screens/ShopSearchScreen';
 import ShopScreen from './src/screens/ShopScreen';
 import PhoneScreen from './src/screens/PhoneScreen';
 import PhoneListScreen from './src/screens/PhoneListScreen';
+import ShopCreateScreen from './src/screens/ShopCreateScreen';
+import ShopEditScreen from './src/screens/ShopEditScreen'
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
 import ResolveAuthscreen from './src/screens/ResolveAuthScreen';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-
 
 const switchNavigator = createSwitchNavigator({
   ResolveAuth: ResolveAuthscreen, //this page help to go to home page without seening login page
@@ -41,16 +42,6 @@ const switchNavigator = createSwitchNavigator({
       },
     },
 
-    Profile: {
-      screen: ProfileScreen,
-      navigationOptions: {
-        tabBarIcon: ({tintColor}) => (
-          <View>
-            <Icon name="ios-person" size={25} style={[{color: tintColor}]} />
-          </View>
-        ),
-      },
-    },
     Search: {
       screen: createStackNavigator({
         Search: SearchScreen,
@@ -64,6 +55,21 @@ const switchNavigator = createSwitchNavigator({
         tabBarIcon: ({tintColor}) => (
           <View>
             <Icon name="ios-search" size={25} style={[{color: tintColor}]} />
+          </View>
+        ),
+      },
+    },
+
+    Profile: {
+      screen: createStackNavigator({
+        Profile: ProfileScreen,
+        ShopCreate: ShopCreateScreen,
+        ShopEdit: ShopEditScreen,
+      }),
+      navigationOptions: {
+        tabBarIcon: ({tintColor}) => (
+          <View>
+            <Icon name="ios-person" size={25} style={[{color: tintColor}]} />
           </View>
         ),
       },
