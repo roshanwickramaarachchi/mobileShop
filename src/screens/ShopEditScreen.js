@@ -14,59 +14,24 @@ import axios from 'axios';
 import {BASE_URL} from '../../constants/constants';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImgToBase64 from 'react-native-image-base64';
-import mobileShopApi from '../api/mobileShopApi';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 const ShopCreateScreen = ({navigation}) => {
+  const shopData = navigation.getParam('shopData'); // this is shop data get from ProfileScreen
+  console.log(
+    'success get shop data from ProfileScreen, shop name: ' + shopData.name,
+  );
   const [isLoading, setIsLoading] = useState(false);
-  ///const [shopData, setShopData] = useState(); // shop data
-  //const [token, setToken] = useState('');
-  const [image, setImage] = useState(); // this is encorded image data
-  const [name, setName] = useState();
-  const [description, setDescription] = useState();
-  const [shopId, setShopId] = useState();
+  const [image, setImage] = useState(shopData.image); // this is encorded image data
+  const [name, setName] = useState(shopData.name);
+  const [description, setDescription] = useState(shopData.description);
+  //const [shopId, setShopId] = useState();
   // const [town, setTown] = useState('');
   // const [address, setAddress] = useState('');
   // const [phone, setPhone] = useState('');
   // const [email, setEmail] = useState('');
   // const [website, setWebsite] = useState('');
-
-  // get relevent logged user created shop data
-  const getShopData = async () => {
-    try {
-      setIsLoading(true);
-      var token = await AsyncStorage.getItem('token'); // get Token from async storage
-      // calling api get logged user data using token
-      const userData = await axios({
-        method: 'get',
-        url: `${BASE_URL}/api/v1/auth/me`,
-        headers: {
-          Authorization: 'Bearer ' + token,
-        },
-      });
-      console.log('success get user data, user_id: ' + userData.data.data._id);
-      // calling api get logged user created shop data
-      const response = await axios({
-        method: 'get',
-        url: `${BASE_URL}/api/v1/bootcamps`,
-        params: {
-          user: userData.data.data._id,
-        },
-      });
-      //console.log(response.data.data[0]._id);
-      //setShopData(response.data.data[0]);
-      setImage(response.data.data[0].image);
-      setName(response.data.data[0].name);
-      setDescription(response.data.data[0].description);
-      setShopId(response.data.data[0]._id);
-      console.log('success get shop, shop name: ' + response.data.data[0].name);
-      setIsLoading(false);
-    } catch (err) {
-      console.log('api call ' + err);
-      setIsLoading(false);
-    }
-  };
-  //console.log('shop name ' + shopData.name);
+  
 
   //   // get relevent logged user created shop data --- this method also work
   //   const getShopData = async () => {
@@ -92,10 +57,10 @@ const ShopCreateScreen = ({navigation}) => {
   //   };
   //   console.log(shopData.name);
 
-  // run this arror funcion only when components is first rerender
-  useEffect(() => {
-    getShopData();
-  }, []);
+  // // run this arror funcion only when components is first rerender
+  // useEffect(() => {
+  //   getShopData();
+  // }, []);
 
   // edit shop details using api(put data to database)
   const editShop = async () => {
@@ -104,7 +69,7 @@ const ShopCreateScreen = ({navigation}) => {
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'put',
-        url: `${BASE_URL}/api/v1/bootcamps/${shopId}`,
+        url: `${BASE_URL}/api/v1/bootcamps/${shopData._id}`,
         headers: {
           //'Content-Type': 'application/json',
           Authorization: 'Bearer ' + token,

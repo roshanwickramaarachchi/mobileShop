@@ -173,7 +173,7 @@ const ProfileScreen = ({navigation}) => {
         <Spacer>
           <Button
             title="Edit Shop"
-            onPress={() => navigation.navigate('ShopEdit')}
+            onPress={() => navigation.navigate('ShopEdit', {shopData})} // all shop data pass to shopEditScreen
           />
         </Spacer>
       ) : null}
