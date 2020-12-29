@@ -16,10 +16,13 @@ import PhoneScreen from './src/screens/PhoneScreen';
 import PhoneListScreen from './src/screens/PhoneListScreen';
 import ShopCreateScreen from './src/screens/ShopCreateScreen';
 import ShopEditScreen from './src/screens/ShopEditScreen'
+import ProfilePhonesScreen from './src/screens/ProfilePhonesScreen';
+import ProfilePhoneScreen from './src/screens/ProfilePhoneScreen';
+import PhoneCreateScreen from './src/screens/PhoneCreateScreen';
+import PhoneEditScreen from './src/screens/PhoneEditScreen';
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
 import ResolveAuthscreen from './src/screens/ResolveAuthScreen';
-
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const switchNavigator = createSwitchNavigator({
@@ -65,6 +68,10 @@ const switchNavigator = createSwitchNavigator({
         Profile: ProfileScreen,
         ShopCreate: ShopCreateScreen,
         ShopEdit: ShopEditScreen,
+        ProfilePhones: ProfilePhonesScreen,
+        ProfilePhone: ProfilePhoneScreen,
+        PhoneCreate: PhoneCreateScreen,
+        PhoneEdit: PhoneEditScreen,
       }),
       navigationOptions: {
         tabBarIcon: ({tintColor}) => (

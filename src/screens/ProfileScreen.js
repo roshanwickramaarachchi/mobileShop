@@ -14,13 +14,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spacer from '../components/Spacer';
 import {NavigationEvents} from 'react-navigation';
 // import jwt_decode from 'jwt-decode';
-import mobileShopApi from '../api/mobileShopApi';
 import {BASE_URL} from '../../constants/constants';
 import axios from 'axios';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 const ProfileScreen = ({navigation}) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const {signout} = useContext(AuthContext);
   // const [userId, setUserId] = useState(); // using token get logged user id
   const [shopData, setShopData] = useState();
@@ -190,7 +189,9 @@ const ProfileScreen = ({navigation}) => {
         <Spacer>
           <Button
             title="Show phone List"
-            onPress={() => console.log('phone list')}
+            onPress={() =>
+              navigation.navigate('ProfilePhones', {shopId: shopData._id})
+            }
           />
         </Spacer>
       ) : null}

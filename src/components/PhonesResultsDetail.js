@@ -3,6 +3,7 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 
 const PhonesResultsDetail = ({result}) => {
   //console.log(result.brand);
+  //results is one phone data
   return (
     // individual phone in flat list
     <View style={styles.container}>
