@@ -20,6 +20,9 @@ import ProfilePhonesScreen from './src/screens/ProfilePhonesScreen';
 import ProfilePhoneScreen from './src/screens/ProfilePhoneScreen';
 import PhoneCreateScreen from './src/screens/PhoneCreateScreen';
 import PhoneEditScreen from './src/screens/PhoneEditScreen';
+import AdminUsersSearchScreen from './src/screens/AdminUsersSearchScreen';
+import AdminUserCreateScreen from './src/screens/AdminUserCreateScreen';
+import AdminUserEditScreen from './src/screens/AdminUserEditScreen';
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
 import ResolveAuthscreen from './src/screens/ResolveAuthScreen';
@@ -72,6 +75,9 @@ const switchNavigator = createSwitchNavigator({
         ProfilePhone: ProfilePhoneScreen,
         PhoneCreate: PhoneCreateScreen,
         PhoneEdit: PhoneEditScreen,
+        AdminUsersSearch: AdminUsersSearchScreen,
+        AdminUserCreate: AdminUserCreateScreen,
+        AdminUserEdit: AdminUserEditScreen,
       }),
       navigationOptions: {
         tabBarIcon: ({tintColor}) => (

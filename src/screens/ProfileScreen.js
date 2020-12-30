@@ -6,7 +6,7 @@ import {
   ScrollView,
   Image,
   View,
-  ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import {Context as AuthContext} from '../context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,8 +17,10 @@ import {NavigationEvents} from 'react-navigation';
 import {BASE_URL} from '../../constants/constants';
 import axios from 'axios';
 import Spinner from 'react-native-loading-spinner-overlay';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const ProfileScreen = ({navigation}) => {
+  
   const [isLoading, setIsLoading] = useState(false);
   const {signout} = useContext(AuthContext);
   // const [userId, setUserId] = useState(); // using token get logged user id
@@ -214,6 +216,18 @@ const ProfileScreen = ({navigation}) => {
       ) : null}
     </ScrollView>
   );
+};
+
+ProfileScreen.navigationOptions = ({navigation}) => {
+  return {
+    title: 'ProfileScreen',
+    headerTitleStyle: {justifyContent: 'center'},
+    headerRight: () => (
+      <TouchableOpacity onPress={() => navigation.navigate('AdminUsersSearch')}>
+        <Icon name="admin-panel-settings" size={25} />
+      </TouchableOpacity>
+    ),
+  };
 };
 
 const styles = StyleSheet.create({
