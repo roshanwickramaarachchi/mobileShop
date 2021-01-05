@@ -15,8 +15,9 @@ import {BASE_URL} from '../../constants/constants';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImgToBase64 from 'react-native-image-base64';
 import Spinner from 'react-native-loading-spinner-overlay';
+import MapView, {Marker} from 'react-native-maps';
 
-const ShopCreateScreen = ({navigation}) => {
+const ShopEditScreen = ({navigation}) => {
   const shopData = navigation.getParam('shopData'); // this is shop data get from ProfileScreen
   console.log(
     'success get shop data from ProfileScreen, shop name: ' + shopData.name,
@@ -25,13 +26,16 @@ const ShopCreateScreen = ({navigation}) => {
   const [image, setImage] = useState(shopData.image); // this is encorded image data
   const [name, setName] = useState(shopData.name);
   const [description, setDescription] = useState(shopData.description);
+  const [latitude, setLatitude] = useState(shopData.latitude);
+  const [longitude, setLongitude] = useState(shopData.longitude);
+  const [fix, setFix] = useState(1); // this is for fix location button error
+  const [errorMessage, setErrorMessage] = useState('');
   //const [shopId, setShopId] = useState();
   // const [town, setTown] = useState('');
   // const [address, setAddress] = useState('');
   // const [phone, setPhone] = useState('');
   // const [email, setEmail] = useState('');
   // const [website, setWebsite] = useState('');
-  
 
   //   // get relevent logged user created shop data --- this method also work
   //   const getShopData = async () => {
@@ -65,7 +69,7 @@ const ShopCreateScreen = ({navigation}) => {
   // edit shop details using api(put data to database)
   const editShop = async () => {
     try {
-      setIsLoading(true);
+      setIsLoading(true); // for loading spinner
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'put',
@@ -78,6 +82,8 @@ const ShopCreateScreen = ({navigation}) => {
           image,
           name,
           description,
+          latitude,
+          longitude,
           // town,
           // address,
           // phone,
@@ -85,13 +91,15 @@ const ShopCreateScreen = ({navigation}) => {
           // website,
         },
       });
-      //console.log(response.data.data.name); 
+      //console.log(response.data.data.name);
       console.log('success edit shop, shop name: ' + response.data.data.name);
       navigation.navigate('Profile');
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
+      setErrorMessage('');
     } catch (err) {
       console.log('api call ' + err);
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
+      setErrorMessage('Something went wrong');
     }
   };
 
@@ -170,22 +178,28 @@ const ShopCreateScreen = ({navigation}) => {
   };
   //console.log(image);
 
-
   return (
     <View>
+      {errorMessage ? (
+        <Text style={styles.errorMesssage}>{errorMessage}</Text>
+      ) : null}
 
       {/* loading-spinner-overlay, until get shop data and edited data put to database, this will run */}
       <Spinner
         visible={isLoading}
-        textContent={'Loading...'}
+        textContent={'Editing...'}
         textStyle={styles.spinnerTextStyle}
       />
 
       <ScrollView>
         <Image style={styles.image} source={{uri: image}} />
         <View>
-          <Button title="upload image" onPress={takePhotoFromCamera} />
-          <Button title="upload image" onPress={takePhotoFromLibrary} />
+          <Spacer>
+            <Button title="upload image" onPress={takePhotoFromCamera} />
+          </Spacer>
+          <Spacer>
+            <Button title="upload image" onPress={takePhotoFromLibrary} />
+          </Spacer>
 
           <Text style={styles.label}>Enter Name:</Text>
           <TextInput style={styles.input} value={name} onChangeText={setName} />
@@ -221,6 +235,47 @@ const ShopCreateScreen = ({navigation}) => {
             value={website}
             onChangeText={setWebsite}
           /> */}
+          {/* ************************************************************************************ */}
+          {/* map */}
+          <MapView
+            style={{
+              height: 300,
+              width: '95%',
+              marginTop: fix, // this is for fix location button error
+              marginBottom: 10,
+              justifyContent: 'center',
+              alignSelf: 'center',
+              borderRadius: 8,
+            }}
+            region={{
+              latitude: latitude,
+              longitude: longitude,
+              latitudeDelta: 0.001,
+              longitudeDelta: 0.001,
+            }}
+            showsUserLocation={true}
+            showsMyLocationButton={true}
+            onPress={(data) => {
+              console.log(data.nativeEvent.coordinate);
+              setLatitude(data.nativeEvent.coordinate.latitude);
+              setLongitude(data.nativeEvent.coordinate.longitude);
+            }}
+            onMapReady={() => setFix(0)} // this is for fix location button error
+          >
+            {/* map Marker */}
+            <Marker
+              coordinate={{
+                latitude: latitude,
+                longitude: longitude,
+              }}
+              //image={images.mapMarker}
+              draggable
+              title={shopData.name}
+            />
+          </MapView>  
+          {/* ********************************************************************************** */}
+          
+
           <Spacer>
             <Button title="save shop" onPress={editShop} />
           </Spacer>
@@ -228,6 +283,17 @@ const ShopCreateScreen = ({navigation}) => {
       </ScrollView>
     </View>
   );
+};
+
+ShopEditScreen.navigationOptions = () => {
+  return {
+    title: 'Shop Edit Screen',
+    headerTitleAlign: 'center',
+    // headerTitleStyle: { 
+    //   textAlign: 'center',
+    //   flex:1, 
+    // },
+  };
 };
 
 const styles = StyleSheet.create({
@@ -248,6 +314,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 5,
   },
+  spinnerTextStyle: {
+    color: '#FFF',
+  },
+  errorMesssage: {
+    fontSize: 16,
+    color: 'red',
+    marginLeft: 15,
+    marginTop: 15,
+  },
 });
 
-export default ShopCreateScreen;
+export default ShopEditScreen;

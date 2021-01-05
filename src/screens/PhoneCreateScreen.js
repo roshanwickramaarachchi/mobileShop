@@ -15,18 +15,20 @@ import {BASE_URL} from '../../constants/constants';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImgToBase64 from 'react-native-image-base64';
 import Spinner from 'react-native-loading-spinner-overlay';
+import {images} from '../../constants';
 
 const PhoneCreateScreen = ({navigation}) => {
   const shopId = navigation.getParam('shopId'); // get shop id from ProfilePhonesScreen
-  const [isLoading, setIsLoading] = useState(false);  
-  const [image, setImage] = useState(); // this is encorded image data
+  const [isLoading, setIsLoading] = useState(false);
+  const [image, setImage] = useState(''); // this is encorded image data
   const [price, setPrice] = useState('');
-  const [brand, setBrand] = useState('');  
+  const [brand, setBrand] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   // create shop using api(post data to database)
   const createPhone = async () => {
     try {
-      setIsLoading(true);
+      setIsLoading(true); // for loading spinner
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'post',
@@ -43,10 +45,12 @@ const PhoneCreateScreen = ({navigation}) => {
       //console.log(response.data);
       console.log('success create Phone');
       navigation.navigate('ProfilePhones');
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
+      setErrorMessage('');
     } catch (err) {
       console.log('api call createShop ' + err);
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
+      setErrorMessage('Something went wrong');
     }
   };
 
@@ -145,7 +149,6 @@ const PhoneCreateScreen = ({navigation}) => {
     });
   };
   //console.log(image);
-  
 
   return (
     <View>
@@ -155,12 +158,34 @@ const PhoneCreateScreen = ({navigation}) => {
         textContent={'Creating...'}
         textStyle={styles.spinnerTextStyle}
       />
+
+      {/* error message */}
+      {errorMessage ? (
+        <Text style={styles.errorMesssage}>{errorMessage}</Text>
+      ) : null}
+
       <ScrollView>
-        
-        <Image style={styles.image} source={{uri: image}} />
+        {/* image, if not image upload yet then default image will see */}
+        {image ? (
+          <Image style={styles.image} source={{uri: image}} />
+        ) : (
+          <Image style={styles.image} source={images.defaultImage} />
+        )}
+
         <View>
-          <Button title="upload image" onPress={takePhotoFromCamera} />
-          <Button title="upload image" onPress={takePhotoFromLibrary} />
+          <Spacer>
+            <Button
+              title="take image from camera"
+              onPress={takePhotoFromCamera}
+            />
+          </Spacer>
+
+          <Spacer>
+            <Button
+              title="take image from gallery"
+              onPress={takePhotoFromLibrary}
+            />
+          </Spacer>
 
           <Text style={styles.label}>Enter Brand:</Text>
           <TextInput
@@ -174,7 +199,7 @@ const PhoneCreateScreen = ({navigation}) => {
             value={price}
             onChangeText={setPrice}
           />
-          
+
           <Spacer>
             <Button title="save phone" onPress={createPhone} />
           </Spacer>
@@ -184,10 +209,25 @@ const PhoneCreateScreen = ({navigation}) => {
   );
 };
 
+PhoneCreateScreen.navigationOptions = () => {
+  return {
+    title: 'Phone Create Screen',
+    headerTitleAlign: 'center',
+    // headerTitleStyle: {
+    //   textAlign: 'center',
+    //   flex:1,
+    // },
+  };
+};
+
 const styles = StyleSheet.create({
   image: {
-    width: 400,
     height: 200,
+    width: '95%',
+    marginTop: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderRadius: 8,
   },
   input: {
     fontSize: 18,
@@ -204,6 +244,12 @@ const styles = StyleSheet.create({
   },
   spinnerTextStyle: {
     color: '#FFF',
+  },
+  errorMesssage: {
+    fontSize: 16,
+    color: 'red',
+    marginLeft: 15,
+    marginTop: 15,
   },
 });
 

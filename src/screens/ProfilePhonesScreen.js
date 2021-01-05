@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Button} from 'react-native';
+import {View, StyleSheet, Button, Text} from 'react-native';
 import axios from 'axios';
 import {BASE_URL} from '../../constants/constants';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -13,10 +13,11 @@ const ProfilePhoneScreen = ({navigation}) => {
 
   const [isLoading, setIsLoading] = useState(false); // loading spinner
   const [phonesData, setPhonesData] = useState([]);  
+  const [errorMessage, setErrorMessage] = useState('');
 
   // get logged user created all phone list
   const getPhonesData = async () => {
-    setIsLoading(true);
+    setIsLoading(true); // for loading spinner
     try {
       const response = await axios({
         method: 'get',
@@ -25,10 +26,12 @@ const ProfilePhoneScreen = ({navigation}) => {
       //console.log(response);
       console.log('success get mobile list, no of phones: ');
       setPhonesData(response.data.data);
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
+      setErrorMessage('');
     } catch (err) {
       console.log('api call getPhonesData ' + err);
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
+      setErrorMessage('Something went wrong');
     }
   };
 
@@ -39,13 +42,17 @@ const ProfilePhoneScreen = ({navigation}) => {
   return (
     <View>
       <NavigationEvents onWillFocus={() => getPhonesData()} />
+      
       <Spinner
         visible={isLoading}
         textContent={'Loading...'}
         textStyle={styles.spinnerTextStyle}
       />
 
-      {/* if user created shop in database this button will hide  */}
+      {/* error message */}
+      {errorMessage ? (
+        <Text style={styles.errorMesssage}>{errorMessage}</Text>
+      ) : null}
 
       <Spacer>
         <Button
@@ -60,9 +67,26 @@ const ProfilePhoneScreen = ({navigation}) => {
   );
 };
 
+ProfilePhoneScreen.navigationOptions = () => {
+  return {
+    title: 'Phone List Screen',
+    headerTitleAlign: 'center',
+    // headerTitleStyle: { 
+    //   textAlign: 'center',
+    //   flex:1, 
+    // },
+  };
+};
+
 const styles = StyleSheet.create({
   spinnerTextStyle: {
     color: '#FFF',
+  },
+  errorMesssage: {
+    fontSize: 16,
+    color: 'red',
+    marginLeft: 15,
+    marginTop: 15,
   },
 });
 

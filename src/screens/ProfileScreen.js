@@ -18,13 +18,17 @@ import {BASE_URL} from '../../constants/constants';
 import axios from 'axios';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {images} from '../../constants';
+import MapView, {Marker} from 'react-native-maps';
 
 const ProfileScreen = ({navigation}) => {
-  
-  const [isLoading, setIsLoading] = useState(false);
+  const [fix, setFix] = useState(1); // this is for fix location button error
+  const [isLoading, setIsLoading] = useState(false); //for loading spinner
+  const [loadingText, setLoadingText] = useState(''); //for loading spinner text
   const {signout} = useContext(AuthContext);
   // const [userId, setUserId] = useState(); // using token get logged user id
   const [shopData, setShopData] = useState();
+  const [errorMessage, setErrorMessage] = useState('');
 
   // // get token from async storage and get logged user id => this method also correct
   // const getLoggedUserDataFromToken = async () => {
@@ -73,7 +77,8 @@ const ProfileScreen = ({navigation}) => {
   // get relevent logged user created shop data
   const getShopData = async () => {
     try {
-      setIsLoading(true);
+      setLoadingText('Loading...'); // for loading spinner text
+      setIsLoading(true); // for loading spinner
       var token = await AsyncStorage.getItem('token'); // get Token from async storage
       // calling api get logged user data using token
       const userData = await axios({
@@ -93,11 +98,14 @@ const ProfileScreen = ({navigation}) => {
         },
       });
       setShopData(response.data.data[0]);
-      console.log('success get shop, shop name: ' + response.data.data[0].name);
-      setIsLoading(false);
+      console.log('success get shop');
+      setIsLoading(false); //for loading spinner
+      setLoadingText(''); //for loading spinner text
+      setErrorMessage('');
     } catch (err) {
       console.log('api call getShopData ' + err);
       setIsLoading(false);
+      setErrorMessage('Something went wrong');
     }
   };
   //console.log('shop name ' + shopData.name);
@@ -105,7 +113,8 @@ const ProfileScreen = ({navigation}) => {
   // delete logged user created shop
   const deleteShop = async () => {
     try {
-      setIsLoading(true);
+      setLoadingText('Deleting...'); //for loading spinner text
+      setIsLoading(true); //for loading spinner
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'delete',
@@ -117,10 +126,13 @@ const ProfileScreen = ({navigation}) => {
       //console.log(response);
       console.log('success delete shop');
       setShopData(null);
-      setIsLoading(false);
+      setIsLoading(false); //for loading spinner
+      setLoadingText(''); //for loading spinner text
+      setErrorMessage('');
     } catch (err) {
       console.log('api call deleteShop ' + err);
-      setIsLoading(false);
+      setIsLoading(false); //for loading spinner
+      setErrorMessage('Something went wrong');
     }
   };
 
@@ -134,94 +146,142 @@ const ProfileScreen = ({navigation}) => {
   // using this function call multiple fuction at sametime
 
   return (
-    <ScrollView>
-      {/* {isLoading ? (
+    <View>
+      {/* error message */}
+      {errorMessage ? (
+        <Text style={styles.errorMesssage}>{errorMessage}</Text>
+      ) : null}
+
+      {/* loading-spinner-overlay, until get shop data from database this will run */}
+      <Spinner
+        visible={isLoading}
+        textContent={loadingText}
+        textStyle={styles.spinnerTextStyle}
+      />
+
+      <ScrollView>
+        {/* {isLoading ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator size="large" color={'#0000ff'} />
         </View>
       ) : null} */}
 
-      {/* loading-spinner-overlay, until get shop data from database this will run */}
-      <Spinner
-        visible={isLoading}
-        textContent={'Loading...'}
-        textStyle={styles.spinnerTextStyle}
-      />
+        {/* <NavigationEvents onWillFocus={getLoggedUserDataFromToken} />  */}
+        {/* when navigate to the screen every time getShopData(userId) function calle */}
+        {/* <NavigationEvents onDidBlur={() => getShopData(userId)} /> */}
+        <NavigationEvents onWillFocus={() => getShopData()} />
 
-      {/* <NavigationEvents onWillFocus={getLoggedUserDataFromToken} />  */}
-      {/* when navigate to the screen every time getShopData(userId) function calle */}
-      {/* <NavigationEvents onDidBlur={() => getShopData(userId)} /> */}
-      <NavigationEvents onWillFocus={() => getShopData()} />
-
-      <Text style={{fontSize: 48}}>ProfileScreen</Text>
-      {/* sign out button */}
-      <Spacer>
-        <Button title="Sign Out" onPress={signout} />
-      </Spacer>
-
-      {/* if user created shop in database this button will hide  */}
-      {!shopData ? (
+        {/* sign out button */}
         <Spacer>
-          <Button
-            title="Create Shop"
-            onPress={() => navigation.navigate('ShopCreate')}
-          />
+          <Button title="Sign Out" onPress={signout} />
         </Spacer>
-      ) : null}
 
-      {/* if user created shop in database this button will show  */}
-      {shopData ? (
-        <Spacer>
-          <Button
-            title="Edit Shop"
-            onPress={() => navigation.navigate('ShopEdit', {shopData})} // all shop data pass to shopEditScreen
-          />
-        </Spacer>
-      ) : null}
+        {/* if user created shop in database this button will hide  */}
+        {!shopData ? (
+          <Spacer>
+            <Button
+              title="Create Shop"
+              onPress={() => navigation.navigate('ShopCreate')}
+            />
+          </Spacer>
+        ) : null}
 
-      {/* if user created shop in database this button will show  */}
-      {shopData ? (
-        <Spacer>
-          <Button title="Delete Shop" onPress={deleteShop} />
-        </Spacer>
-      ) : null}
+        {/* if user created shop in database this button will show  */}
+        {shopData ? (
+          <Spacer>
+            <Button
+              title="Edit Shop"
+              onPress={() => navigation.navigate('ShopEdit', {shopData})} // all shop data pass to shopEditScreen
+            />
+          </Spacer>
+        ) : null}
 
-      {/* if user created shop in database this button will show  */}
-      {shopData ? (
-        <Spacer>
-          <Button
-            title="Show phone List"
-            onPress={() =>
-              navigation.navigate('ProfilePhones', {shopId: shopData._id})
-            }
-          />
-        </Spacer>
-      ) : null}
+        {/* if user created shop in database this button will show  */}
+        {shopData ? (
+          <Spacer>
+            <Button title="Delete Shop" onPress={deleteShop} />
+          </Spacer>
+        ) : null}
 
-      {/* view shop */}
-      {/* if there is no shop in database(check shopData.name) shop data not view */}
-      {shopData ? (
-        <View style={{flex: 1}}>
-          {/* shop main image */}
-          <Image style={styles.shopImage} source={{uri: shopData.image}} />
+        {/* if user created shop in database this button will show  */}
+        {shopData ? (
+          <Spacer>
+            <Button
+              title="Show phone List"
+              onPress={() =>
+                navigation.navigate('ProfilePhones', {shopId: shopData._id})
+              }
+            />
+          </Spacer>
+        ) : null}
 
-          {/* shop details */}
-          <View style={styles.fontDetails}>
-            <Text>Name: {shopData.name}</Text>
-            <Text>Description: {shopData.description}</Text>
-            <Text>Phone No: {shopData.phone}</Text>
-            <Text>Email: {shopData.email}</Text>
+        {/* view shop */}
+        {/* if there is no shop in database(check shopData.name) shop data not view */}
+        {shopData ? (
+          <View>
+            <View style={{flex: 1}}>
+              {/*shop image, if not image upload yet then default image will see */}
+              {shopData.image ? (
+                <Image
+                  style={styles.shopImage}
+                  source={{uri: shopData.image}}
+                />
+              ) : (
+                <Image style={styles.shopImage} source={images.defaultImage} />
+              )}
+              {/* ******************************************************************************************* */}
+              {/* shop details */}
+              <View style={styles.fontDetails}>
+                <Text>Name: {shopData.name}</Text>
+                <Text>Description: {shopData.description}</Text>
+                <Text>Phone No: {shopData.phone}</Text>
+                <Text>Email: {shopData.email}</Text>
+              </View>
+            </View>
+            {/* map ********************************************************************************************/}
+            <MapView
+              style={{
+                height: 300,
+                width: '95%',
+                marginTop: fix, // this is for fix location button error
+                marginBottom: 10,
+                justifyContent: 'center',
+                alignSelf: 'center',
+                borderRadius: 8,
+              }}
+              region={{
+                latitude: shopData.latitude,
+                longitude: shopData.longitude,
+                latitudeDelta: 0.001,
+                longitudeDelta: 0.001,
+              }}
+              showsUserLocation={true}
+              showsMyLocationButton={true}              
+              onMapReady={() => setFix(0)} // this is for fix location button error
+            >
+              {/* map Marker */}
+              <Marker
+                coordinate={{
+                  latitude: shopData.latitude,
+                  longitude: shopData.longitude,
+                }}
+                //image={images.mapMarker}
+                // draggable
+                title={shopData.name}
+              />
+            </MapView>
+            {/* ********************************************************************************** */}
           </View>
-        </View>
-      ) : null}
-    </ScrollView>
+        ) : null}
+      </ScrollView>
+    </View>
   );
 };
 
 ProfileScreen.navigationOptions = ({navigation}) => {
   return {
     title: 'ProfileScreen',
-    headerTitleStyle: {justifyContent: 'center'},
+    headerTitleAlign: 'center',
     headerRight: () => (
       <TouchableOpacity onPress={() => navigation.navigate('AdminUsersSearch')}>
         <Icon name="admin-panel-settings" size={25} />
@@ -232,12 +292,19 @@ ProfileScreen.navigationOptions = ({navigation}) => {
 
 const styles = StyleSheet.create({
   shopImage: {
-    width: '95%',
     height: 200,
-    marginLeft: 10,
-    marginRight: 10,
+    width: '95%',
     marginTop: 10,
     marginBottom: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderRadius: 8,
+  },
+  errorMesssage: {
+    fontSize: 16,
+    color: 'red',
+    marginLeft: 15,
+    marginTop: 15,
   },
   fontDetails: {
     paddingLeft: 10,

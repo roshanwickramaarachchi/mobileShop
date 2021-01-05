@@ -7,6 +7,7 @@ import {BASE_URL} from '../../constants/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {NavigationEvents} from 'react-navigation';
+import Spacer from '../components/Spacer';
 
 const AdminUsersSearchScreen = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,7 +18,7 @@ const AdminUsersSearchScreen = ({navigation}) => {
   // get all users data
   const getUsersData = async (searchTerm) => {
     try {
-      setIsLoading(true);
+      setIsLoading(true); // for loading spinner
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'get',
@@ -32,11 +33,11 @@ const AdminUsersSearchScreen = ({navigation}) => {
       setUsersData(response.data.data);
       //console.log(response.data.data);
       console.log('success get users data:');
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
     } catch (err) {
       setErrorMessage('Something went wrong');
       console.log('api call getUsersData ' + err);
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
     }
   };
 
@@ -49,6 +50,7 @@ const AdminUsersSearchScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <NavigationEvents onWillFocus={() => getUsersData()} />
+
       {/* loading spinner it will run until api calle finish */}
       <Spinner
         visible={isLoading}
@@ -56,7 +58,11 @@ const AdminUsersSearchScreen = ({navigation}) => {
         textStyle={styles.spinnerTextStyle}
       />
 
-      <Text style={styles.headerFont}>users seach</Text>
+      {/* error messsage indicate in bellow seachbar  */}
+      {errorMessage ? (
+        <Text style={styles.errorMesssage}>{errorMessage}</Text>
+      ) : null}
+
       {/* search bar */}
       <SearchBar
         term={term}
@@ -64,17 +70,28 @@ const AdminUsersSearchScreen = ({navigation}) => {
         onTermSubmit={() => getUsersData(term)}
       />
 
-      <Button
-        title="create user"
-        onPress={() => navigation.navigate('AdminUserCreate')}
-      />
-      {/* error messsage indicate in bellow seachbar  */}
-      {errorMessage ? <Text>{errorMessage}</Text> : null}
+      <Spacer>
+        <Button
+          title="create user"
+          onPress={() => navigation.navigate('AdminUserCreate')}
+        />
+      </Spacer>
 
       {/* all suser data passe to AdminUsersResultsList  */}
       <AdminUsersResultsList usersData={usersData} />
     </View>
   );
+};
+
+AdminUsersSearchScreen.navigationOptions = () => {
+  return {
+    title: 'Search Screen',
+    headerTitleAlign: 'center',
+    // headerTitleStyle: {
+    //   textAlign: 'center',
+    //   flex:1,
+    // },
+  };
 };
 
 const styles = StyleSheet.create({
@@ -88,6 +105,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     alignSelf: 'center',
+  },
+  errorMesssage: {
+    fontSize: 16,
+    color: 'red',
+    marginLeft: 15,
+    marginTop: 15,
   },
 });
 

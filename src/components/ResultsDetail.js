@@ -18,6 +18,7 @@ const ResultsDetail = ({result}) => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

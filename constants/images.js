@@ -1,17 +1,17 @@
-export const beach = require("../assets/images/beach.jpeg");
-export const climbingHills = require("../assets/images/climbing_hills.jpg");
-export const frozenHills = require("../assets/images/frozen_hills.jpg");
-export const homeBanner = require("../assets/images/home_banner.jpg");
-export const onboardingImage = require("../assets/images/onboarding_image.jpg");
-export const skiVilla = require("../assets/images/ski_villa.jpg");
-export const skiVillaBanner = require("../assets/images/ski_villa_banner.jpg");
+export const sony = require('../assets/images/sony.jpg');
+export const samsung = require('../assets/images/samsung.jpg');
+export const huawei = require('../assets/images/huawei.png');
+export const apple = require('../assets/images/apple.jpg');
+export const shop1 = require('../assets/images/shop1.png');
+export const shop2 = require('../assets/images/shop2.jpg');
+export const shop3 = require('../assets/images/shop3.jpg');
 
 export default {
-    beach,
-    climbingHills,
-    frozenHills,
-    homeBanner,
-    onboardingImage,
-    skiVilla,
-    skiVillaBanner,
-}
+  sony,
+  samsung,
+  huawei,
+  apple,
+  shop1,
+  shop2,
+  shop3,
+};

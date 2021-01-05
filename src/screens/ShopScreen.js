@@ -1,17 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  FlatList,
-  TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-} from 'react-native';
+import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
 import {Button} from 'react-native-elements';
 import mobileShopApi from './../api/mobileShopApi';
-import PhoneListScreen from './PhoneListScreen';
+import Spacer from '../components/Spacer';
 
 const ShopScreen = ({navigation}) => {
   const id = navigation.getParam('id'); // this id is tuched, shop id
@@ -56,23 +47,37 @@ const ShopScreen = ({navigation}) => {
         </View>
 
         {/* when press this button shop id is pass to PhoneListScreen, then phone list can view  */}
-        <Button
-          title="all phone in the shop"
-          onPress={() => navigation.navigate('PhoneList', {id})}
-        />
+        <Spacer>
+          <Button
+            title="all phone in the shop"
+            onPress={() => navigation.navigate('PhoneList', {id})}
+          />
+        </Spacer>
       </ScrollView>
     </View>
   );
 };
 
+ShopScreen.navigationOptions = () => {
+  return {
+    title: 'Shop Screen',
+    headerTitleAlign: 'center',
+    // headerTitleStyle: {
+    //   textAlign: 'center',
+    //   flex:1,
+    // },
+  };
+};
+
 const styles = StyleSheet.create({
   shopImage: {
-    width: '95%',
     height: 200,
-    marginLeft: 10,
-    marginRight: 10,
+    width: '95%',
     marginTop: 10,
     marginBottom: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderRadius: 8,
   },
   fontDetails: {
     paddingLeft: 10,

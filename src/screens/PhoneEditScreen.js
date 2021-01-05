@@ -22,17 +22,18 @@ const PhoneEditScreen = ({navigation}) => {
     'success get phone data from ProfilePhonesScreen, phone brand: ' +
       phoneData.brand,
   );
-  
+
   //const shopId = navigation.getParam('shopId'); // get shop id from ProfilePhonesScreen
-  const [isLoading, setIsLoading] = useState(false);  
+  const [isLoading, setIsLoading] = useState(false);
   const [image, setImage] = useState(phoneData.image); // this is encorded image data
   const [price, setPrice] = useState(phoneData.price);
-  const [brand, setBrand] = useState(phoneData.brand);  
+  const [brand, setBrand] = useState(phoneData.brand);
+  const [errorMessage, setErrorMessage] = useState('');
 
   // create shop using api(post data to database)
   const editPhone = async () => {
     try {
-      setIsLoading(true);
+      setIsLoading(true); // for loading spinner
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'put',
@@ -49,10 +50,12 @@ const PhoneEditScreen = ({navigation}) => {
       //console.log(response.data);
       console.log('success update Phone');
       navigation.navigate('ProfilePhone');
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
+      setErrorMessage('');
     } catch (err) {
       console.log('api call edit phone ' + err);
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
+      setErrorMessage('Something went wrong');
     }
   };
 
@@ -151,22 +154,37 @@ const PhoneEditScreen = ({navigation}) => {
     });
   };
   //console.log(image);
-  
 
   return (
     <View>
       {/* loading-spinner-overlay, until post shop data to database this will run */}
       <Spinner
         visible={isLoading}
-        textContent={'Creating...'}
+        textContent={'Editing...'}
         textStyle={styles.spinnerTextStyle}
       />
+
+      {/* error message */}
+      {errorMessage ? (
+        <Text style={styles.errorMesssage}>{errorMessage}</Text>
+      ) : null}
+
       <ScrollView>
-        
         <Image style={styles.image} source={{uri: image}} />
+
         <View>
-          <Button title="upload image" onPress={takePhotoFromCamera} />
-          <Button title="upload image" onPress={takePhotoFromLibrary} />
+          <Spacer>
+            <Button
+              title="take image from camera"
+              onPress={takePhotoFromCamera}
+            />
+          </Spacer>
+          <Spacer>
+            <Button
+              title="take image from gallery"
+              onPress={takePhotoFromLibrary}
+            />
+          </Spacer>
 
           <Text style={styles.label}>Enter Brand:</Text>
           <TextInput
@@ -180,7 +198,7 @@ const PhoneEditScreen = ({navigation}) => {
             value={price}
             onChangeText={setPrice}
           />
-          
+
           <Spacer>
             <Button title="save phone" onPress={editPhone} />
           </Spacer>
@@ -190,10 +208,25 @@ const PhoneEditScreen = ({navigation}) => {
   );
 };
 
+PhoneEditScreen.navigationOptions = () => {
+  return {
+    title: 'Phone Edit Screen',
+    headerTitleAlign: 'center',
+    // headerTitleStyle: {
+    //   textAlign: 'center',
+    //   flex:1,
+    // },
+  };
+};
+
 const styles = StyleSheet.create({
   image: {
-    width: 400,
     height: 200,
+    width: '95%',
+    marginTop: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderRadius: 8,
   },
   input: {
     fontSize: 18,
@@ -210,6 +243,12 @@ const styles = StyleSheet.create({
   },
   spinnerTextStyle: {
     color: '#FFF',
+  },
+  errorMesssage: {
+    fontSize: 16,
+    color: 'red',
+    marginLeft: 15,
+    marginTop: 15,
   },
 });
 

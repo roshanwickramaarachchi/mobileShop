@@ -13,6 +13,7 @@ const AdminUserCreateScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   // create user
   const createUser = async () => {
@@ -35,11 +36,13 @@ const AdminUserCreateScreen = ({navigation}) => {
       //console.log(response.data);
       console.log('success create user');
       //navigation.navigate('ProfilePhones');
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
+      setErrorMessage('');
       navigation.navigate('AdminUsersSearch');
     } catch (err) {
       console.log('api call creatUser ' + err);
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
+      setErrorMessage('Something went wrong');
     }
   };
 
@@ -51,6 +54,12 @@ const AdminUserCreateScreen = ({navigation}) => {
         textContent={'Creating...'}
         textStyle={styles.spinnerTextStyle}
       />
+      {/* error messsage indicate in bellow seachbar  */}
+      {errorMessage ? (
+        <Text style={styles.errorMesssage}>{errorMessage}</Text>
+      ) : null}
+
+
       <View>
         <View>
           {/* user name input */}
@@ -85,6 +94,17 @@ const AdminUserCreateScreen = ({navigation}) => {
   );
 };
 
+AdminUserCreateScreen.navigationOptions = () => {
+  return {
+    title: 'User Create Screen',
+    headerTitleAlign: 'center',
+    // headerTitleStyle: {
+    //   textAlign: 'center',
+    //   flex:1,
+    // },
+  };
+};
+
 const styles = StyleSheet.create({
   input: {
     fontSize: 18,
@@ -101,6 +121,12 @@ const styles = StyleSheet.create({
   },
   spinnerTextStyle: {
     color: '#FFF',
+  },
+  errorMesssage: {
+    fontSize: 16,
+    color: 'red',
+    marginLeft: 15,
+    marginTop: 15,
   },
 });
 

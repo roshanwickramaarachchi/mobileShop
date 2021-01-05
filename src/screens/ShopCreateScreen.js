@@ -18,23 +18,38 @@ import {BASE_URL} from '../../constants/constants';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImgToBase64 from 'react-native-image-base64';
 import Spinner from 'react-native-loading-spinner-overlay';
+import {images} from '../../constants';
+import MapView, {Marker} from 'react-native-maps';
+import Geolocation from 'react-native-geolocation-service';
 
-const ShopCreateScreen = ({navigation}) => {
+const ShopCreateScreen = ({navigation}) => {  
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+
+  const [fix, setFix] = useState(1); // this is for fix location button error
   const [isLoading, setIsLoading] = useState(false);
   //const [token, setToken] = useState('');
   const [image, setImage] = useState(); // this is encorded image data
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   // const [town, setTown] = useState('');
   // const [address, setAddress] = useState('');
   // const [phone, setPhone] = useState('');
   // const [email, setEmail] = useState('');
   // const [website, setWebsite] = useState('');
 
+  // avoid loading spinner run limitlus time
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     setIsLoading(false);
+  //   }, 3000);
+  // }, []);
+
   // create shop using api(post data to database)
   const createShop = async () => {
     try {
-      setIsLoading(true);
+      setIsLoading(true); // for loading spinner
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'post',
@@ -43,6 +58,8 @@ const ShopCreateScreen = ({navigation}) => {
           image,
           name,
           description,
+          latitude,
+          longitude,
           // town,
           // address,
           // phone,
@@ -57,13 +74,15 @@ const ShopCreateScreen = ({navigation}) => {
       //console.log(response.data);
       console.log('success create shop');
       navigation.navigate('Profile');
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
+      setErrorMessage('');
     } catch (err) {
       console.log('api call createShop ' + err);
       setIsLoading(false);
+      setErrorMessage('Something went wrong');
     }
   };
-
+   //******************************************************************************************
   // using image picker get image from camera, and get image data
   const takePhotoFromCamera = () => {
     const options = {
@@ -159,7 +178,31 @@ const ShopCreateScreen = ({navigation}) => {
     });
   };
   //console.log(image);
-  
+  //****************************************************************************************
+  //get current location
+  const getUserLocation = () => {
+    Geolocation.getCurrentPosition(
+      (position) => {
+        console.log(position);
+        // setLocation({
+        //   latitude: position.coords.latitude,
+        //   longitude: position.coords.longitude,
+        // });
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+        // setUserLocation(position.coords);
+      },
+      (error) => {
+        // See error code charts below.
+        console.log(error.code, error.message);
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
+  };
+
+  useEffect(() => {
+    getUserLocation();
+  }, []);
 
   //**************************************************************************** */
   // // this is anather way to pass authorazation header for specific Ulr
@@ -222,25 +265,47 @@ const ShopCreateScreen = ({navigation}) => {
   // }, []);
   //************************************************************************************ */
   return (
-    <View>
+    <>
       {/* loading-spinner-overlay, until post shop data to database this will run */}
       <Spinner
         visible={isLoading}
         textContent={'Creating...'}
         textStyle={styles.spinnerTextStyle}
       />
+
+      {errorMessage ? (
+        <Text style={styles.errorMesssage}>{errorMessage}</Text>
+      ) : null}
+
       <ScrollView>
         {/* <ShopForm
           onSubmit={(image, name) => {
             ShopCreateScreen(image, name, () => navigation.navigate('Index'));
           }}
         /> */}
-        <Image style={styles.image} source={{uri: image}} />
+        {/* ************************************************************************************************************* */}
+        {/*shop image, if not image upload yet then default image will see */}
+        {image ? (
+          <Image style={styles.ShopImage} source={{uri: image}} />
+        ) : (
+          <Image style={styles.ShopImage} source={images.defaultImage} />
+        )}
+        {/* ************************************************************************************************ */}
         <View>
-          <Button title="upload image" onPress={takePhotoFromCamera} />
-          <Button title="upload image" onPress={takePhotoFromLibrary} />
+          <Spacer>
+            <Button
+              title="take photo from camera"
+              onPress={takePhotoFromCamera}
+            />
+          </Spacer>
+          <Spacer>
+            <Button
+              title="upload image from gallery"
+              onPress={takePhotoFromLibrary}
+            />
+          </Spacer>
 
-          <Text style={styles.label}>Enter Name:</Text>
+          <Text style={styles.label}>Enter Shop Name:</Text>
           <TextInput style={styles.input} value={name} onChangeText={setName} />
           <Text style={styles.label}>Enter Description:</Text>
           <TextInput
@@ -274,19 +339,77 @@ const ShopCreateScreen = ({navigation}) => {
             value={website}
             onChangeText={setWebsite}
           /> */}
+          {/* ****************************************************************************** */}
+          {/* map */}
+          <MapView
+            style={{
+              height: 300,
+              width: '95%',
+              marginTop: fix, // this is for fix location button error
+              marginBottom: 10,
+              justifyContent: 'center',
+              alignSelf: 'center',
+              borderRadius: 8,
+            }}
+            region={{
+              latitude: latitude,
+              longitude: longitude,
+              latitudeDelta: 0.001,
+              longitudeDelta: 0.001,
+            }}
+            showsUserLocation={true}
+            showsMyLocationButton={true}
+            onPress={(data) => {
+              //console.log(data.nativeEvent.coordinate);
+              setLatitude(data.nativeEvent.coordinate.latitude);
+              setLongitude(data.nativeEvent.coordinate.longitude);
+            }}
+            onMapReady={() => setFix(0)} // this is for fix location button error
+          >
+            {/* map Marker */}
+            <Marker
+              coordinate={{
+                latitude: latitude,
+                longitude: longitude,
+              }}
+              //image={images.mapMarker}
+              draggable={true}
+              onDragEnd={(e) => {
+                console.log('dragEnd', e.nativeEvent.coordinate);
+              }}
+              title={name}
+            />
+          </MapView>
+         {/* ******************************************************************************** */}
           <Spacer>
             <Button title="save shop" onPress={createShop} />
           </Spacer>
         </View>
       </ScrollView>
-    </View>
+    </>
   );
 };
 
+ShopCreateScreen.navigationOptions = () => {
+  return {
+    title: 'Shop Create Screen',
+    headerTitleAlign: 'center',
+    // headerTitleStyle: {
+    //   textAlign: 'center',
+    //   flex:1,
+    // },
+  };
+};
+
 const styles = StyleSheet.create({
-  image: {
-    width: 400,
+  ShopImage: {
     height: 200,
+    width: '95%',
+    marginTop: 10,
+    marginBottom: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderRadius: 8,
   },
   input: {
     fontSize: 18,
@@ -303,6 +426,12 @@ const styles = StyleSheet.create({
   },
   spinnerTextStyle: {
     color: '#FFF',
+  },
+  errorMesssage: {
+    fontSize: 16,
+    color: 'red',
+    marginLeft: 15,
+    marginTop: 15,
   },
 });
 

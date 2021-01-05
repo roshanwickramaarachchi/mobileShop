@@ -21,10 +21,12 @@ const AdminUserCreateScreen = ({navigation}) => {
       userData.name,
   );
 
+  const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState(userData.name);
   const [email, setEmail] = useState(userData.email);
   const [role, setRole] = useState(userData.role);
+
 
   // edit user
   //admin can not edit data
@@ -47,11 +49,13 @@ const AdminUserCreateScreen = ({navigation}) => {
       });
       //console.log(response.data);
       console.log('success eddit user, user name: ');
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
       navigation.navigate('AdminUsersSearch');
+      setErrorMessage('');
     } catch (err) {
       console.log('api call editUser ' + err);
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
+      setErrorMessage('Something went wrong');
     }
   };
 
@@ -60,9 +64,15 @@ const AdminUserCreateScreen = ({navigation}) => {
       {/* loading-spinner-overlay, until post shop data to database this will run */}
       <Spinner
         visible={isLoading}
-        textContent={'Loading...'}
+        textContent={'Editing...'}
         textStyle={styles.spinnerTextStyle}
       />
+       
+      {/* error messsage indicate in bellow seachbar  */}
+      {errorMessage ? (
+        <Text style={styles.errorMesssage}>{errorMessage}</Text>
+      ) : null}
+
       <View>
         <View>
           {/* user name input */}
@@ -90,6 +100,17 @@ const AdminUserCreateScreen = ({navigation}) => {
   );
 };
 
+AdminUserCreateScreen.navigationOptions = () => {
+  return {
+    title: 'User Edit Screen',
+    headerTitleAlign: 'center',
+    // headerTitleStyle: {
+    //   textAlign: 'center',
+    //   flex:1,
+    // },
+  };
+};
+
 const styles = StyleSheet.create({
   input: {
     fontSize: 18,
@@ -106,6 +127,12 @@ const styles = StyleSheet.create({
   },
   spinnerTextStyle: {
     color: '#FFF',
+  },
+  errorMesssage: {
+    fontSize: 16,
+    color: 'red',
+    marginLeft: 15,
+    marginTop: 15,
   },
 });
 

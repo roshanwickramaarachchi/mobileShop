@@ -4,16 +4,20 @@ import {BASE_URL} from '../../constants/constants';
 import axios from 'axios';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Spacer from '../components/Spacer';
 
 const ProfilePhoneScreen = ({navigation}) => {
   const phoneId = navigation.getParam('phoneId'); // this id is one phone id,/ this is way to  get information as sesond argument
-  
+
   const [phoneData, setPhoneData] = useState(null); // phoneData = one  phone data
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // for loading spinner
+  const [loadingText, setLoadingText] = useState(''); //for loading spinner text
+  const [errorMessage, setErrorMessage] = useState('');
 
   // get tuched phone data using api
   const getPhoneData = async () => {
-    setIsLoading(true);
+    setLoadingText('Loading...'); // for loading spinner text
+    setIsLoading(true); // for loding spinner
     try {
       const response = await axios({
         method: 'get',
@@ -25,17 +29,20 @@ const ProfilePhoneScreen = ({navigation}) => {
       );
       setPhoneData(response.data.data);
       setIsLoading(false);
+      setLoadingText(''); // for loading spinner text
+      setErrorMessage('');
     } catch (err) {
       console.log('api call getPhonsData ' + err);
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
+      setErrorMessage('Something went wrong');
     }
   };
 
-  
   // delete viewed phone
   const deletePhone = async () => {
     try {
-      setIsLoading(true);
+      setLoadingText('Deleting...'); // for loading spinner text
+      setIsLoading(true); // for loading spinner
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'delete',
@@ -47,14 +54,13 @@ const ProfilePhoneScreen = ({navigation}) => {
       //console.log(response);
       console.log('success delete phone');
       navigation.navigate('ProfilePhones');
-      setIsLoading(false);
+      setIsLoading(false); // for loading spinner
+      setLoadingText(''); // for loading spinner text
     } catch (err) {
       console.log('api call deleteShop ' + err);
       setIsLoading(false);
     }
   };
-
-
 
   useEffect(() => {
     getPhoneData();
@@ -69,17 +75,27 @@ const ProfilePhoneScreen = ({navigation}) => {
     <View>
       <Spinner
         visible={isLoading}
-        textContent={'Loading...'}
+        textContent={loadingText}
         textStyle={styles.spinnerTextStyle}
       />
 
-      {/* viewed phone delete */}
-      <Button
-        title="edit phone"
-        onPress={() => navigation.navigate('PhoneEdit', {phoneData: phoneData})}
-      />
+      {/* error message */}
+      {errorMessage ? (
+        <Text style={styles.errorMesssage}>{errorMessage}</Text>
+      ) : null}
 
-      <Button title="delete phone" onPress={deletePhone} />
+      {/* viewed phone delete */}
+      <Spacer>
+        <Button
+          title="edit phone"
+          onPress={() =>
+            navigation.navigate('PhoneEdit', {phoneData: phoneData})
+          }
+        />
+      </Spacer>
+      <Spacer>
+        <Button title="delete phone" onPress={deletePhone} />
+      </Spacer>
 
       <Image style={styles.image} source={{uri: phoneData.image}} />
       <View style={styles.fontDetail}>
@@ -91,6 +107,17 @@ const ProfilePhoneScreen = ({navigation}) => {
       </View>
     </View>
   );
+};
+
+ProfilePhoneScreen.navigationOptions = () => {
+  return {
+    title: 'Phone Screen',
+    headerTitleAlign: 'center',
+    // headerTitleStyle: {
+    //   textAlign: 'center',
+    //   flex:1,
+    // },
+  };
 };
 
 const styles = StyleSheet.create({
@@ -108,6 +135,12 @@ const styles = StyleSheet.create({
   },
   spinnerTextStyle: {
     color: '#FFF',
+  },
+  errorMesssage: {
+    fontSize: 16,
+    color: 'red',
+    marginLeft: 15,
+    marginTop: 15,
   },
 });
 

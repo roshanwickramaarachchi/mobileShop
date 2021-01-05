@@ -17,23 +17,23 @@ const HomeScreen = ({navigation}) => {
   const [destinations, setDestinations] = React.useState([
     {
       id: 0,
-      name: 'Ski Villa',
-      img: images.skiVilla,
+      name: 'SONY',
+      img: images.sony,
     },
     {
       id: 1,
-      name: 'Climbing Hills',
-      img: images.climbingHills,
+      name: 'SAMSUNG',
+      img: images.samsung,
     },
     {
       id: 2,
-      name: 'Frozen Hills',
-      img: images.frozenHills,
+      name: 'HUAWEI',
+      img: images.huawei,
     },
     {
       id: 3,
-      name: 'Beach',
-      img: images.beach,
+      name: 'APPLE',
+      img: images.apple,
     },
   ]);
   // *****************************************************************
@@ -72,30 +72,32 @@ const HomeScreen = ({navigation}) => {
   //*******************************************************************
   return (
     <View style={styles.container}>
+
       {/*swiper image title */}
       <Text style={styles.headerFont}>Mobile Shops</Text>
-      {/* swiper shop images */}
+
+      {/* swiper, shop images */}
       <View style={{flex: 1}}>
         <TouchableOpacity onPress={() => navigation.navigate('Search')}>
           <View style={styles.sliderContainer}>
             <Swiper autoplay height={200}>
               <View style={styles.slide}>
                 <Image
-                  source={images.skiVilla}
+                  source={images.shop1}
                   resizeMode="cover"
                   style={styles.sliderImage}
                 />
               </View>
               <View style={styles.slide}>
                 <Image
-                  source={images.climbingHills}
+                  source={images.shop2}
                   resizeMode="cover"
                   style={styles.sliderImage}
                 />
               </View>
               <View style={styles.slide}>
                 <Image
-                  source={images.frozenHills}
+                  source={images.shop3}
                   resizeMode="cover"
                   style={styles.sliderImage}
                 />
@@ -123,7 +125,7 @@ const HomeScreen = ({navigation}) => {
 HomeScreen.navigationOptions = () => {
   return {
     title: 'Home Screen',
-    headerTitleStyle: {justifyContent: 'center'},
+    headerTitleAlign: 'center',
     headerLeft: () => (
       <TouchableOpacity>
         <Icon name="ios-menu" size={25} />

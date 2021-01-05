@@ -42,15 +42,26 @@ const PhoneScreen = ({navigation}) => {
   );
 };
 
+PhoneScreen.navigationOptions = () => {
+  return {
+    title: 'Phone Screen',
+    headerTitleAlign: 'center',
+    // headerTitleStyle: {
+    //   textAlign: 'center',
+    //   flex:1,
+    // },
+  };
+};
+
 const styles = StyleSheet.create({
   image: {
-    width: 385,
     height: 300,
-    marginLeft: 15,
-    marginRight: 15,
+    width: '95%',
     marginTop: 10,
     marginBottom: 10,
-    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderRadius: 8,
   },
   fontDetail: {
     marginLeft: 5,
