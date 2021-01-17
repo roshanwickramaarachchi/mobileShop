@@ -50,6 +50,12 @@ const SigninScreen = ({navigation}) => {
           </Text>
         </Spacer>
       </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+        <Spacer>
+          <Text style={styles.link}>Forgot Password</Text>
+        </Spacer>
+      </TouchableOpacity>
     </View>
   );
 };

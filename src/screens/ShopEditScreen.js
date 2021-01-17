@@ -195,10 +195,10 @@ const ShopEditScreen = ({navigation}) => {
         <Image style={styles.image} source={{uri: image}} />
         <View>
           <Spacer>
-            <Button title="upload image" onPress={takePhotoFromCamera} />
+            <Button title="take image from camera  " onPress={takePhotoFromCamera} />
           </Spacer>
           <Spacer>
-            <Button title="upload image" onPress={takePhotoFromLibrary} />
+            <Button title="upload image from gallary" onPress={takePhotoFromLibrary} />
           </Spacer>
 
           <Text style={styles.label}>Enter Name:</Text>
@@ -270,6 +270,11 @@ const ShopEditScreen = ({navigation}) => {
               }}
               //image={images.mapMarker}
               draggable
+              onDragEnd={(data) => {
+                //console.log(data.nativeEvent.coordinate);
+                setLatitude(data.nativeEvent.coordinate.latitude);
+                setLongitude(data.nativeEvent.coordinate.longitude);
+              }}
               title={shopData.name}
             />
           </MapView>  

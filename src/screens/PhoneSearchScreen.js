@@ -4,12 +4,17 @@ import SearchBar from '../components/SearchBar';
 import mobileShopApi from './../api/mobileShopApi';
 import PhoneResultsList from '../components/PhoneResultsList';
 import Spinner from 'react-native-loading-spinner-overlay';
+import axios from 'axios';
+import {BASE_URL} from '../../constants/constants';
+import DropDownPicker from 'react-native-dropdown-picker';
+import Spacer from '../components/Spacer';
 
 const PhoneSearchScreen = () => {
   const [term, setTerm] = useState('');
   const [results, setResults] = useState([]); // results= phones
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false); // for loading spinner
+  const [searchKeyword, setSearchKeyword] = useState('brand'); //user can select one keyword using drop down picker
 
   // get data from Api and data set to 'result'
   const searchApi = async (searchTerm) => {
@@ -30,10 +35,32 @@ const PhoneSearchScreen = () => {
   };
   //console.log(results);
 
+  // get all users data, also can d=search and then get relevent shop data
+  const getShopsData = async (searchTerm) => {
+    try {
+      setIsLoading(true); // for loading spinner
+      const response = await axios({
+        method: 'get',
+        url: `${BASE_URL}/api/v1/courses?${searchKeyword}=${searchTerm}`,
+        // params: {
+        //   town: searchTerm,
+        // },
+      });
+      setResults(response.data.data);
+      console.log(response.data);
+      console.log('success get phone data:');
+      setIsLoading(false); // for loading spinner
+    } catch (err) {
+      setErrorMessage('Something went wrong');
+      console.log('api call getPhoneData ' + err);
+      setIsLoading(false); // for loading spinner
+    }
+  };
+
   // run this arror funcion only when components is first rerender
   //the is no parameter pass, so all shop details can get
   useEffect(() => {
-    searchApi();
+    getShopsData();
   }, []);
 
   return (
@@ -56,6 +83,30 @@ const PhoneSearchScreen = () => {
         onTermChange={setTerm}
         onTermSubmit={() => searchApi(term)}
       />
+
+      <Text style={styles.text}>select item for search</Text>
+      {/* drop down selct picker */}
+      <Spacer>
+        <DropDownPicker
+          items={[
+            {
+              label: 'phone brand',
+              value: 'brand',
+              hidden: true,
+            },
+            {
+              label: 'phone model',
+              value: 'model',
+            },
+          ]}
+          defaultValue={searchKeyword}
+          containerStyle={{height: 40}}
+          style={{backgroundColor: '#fafafa'}}
+          itemStyle={{justifyContent: 'flex-start'}}
+          dropDownStyle={{backgroundColor: '#fafafa'}}
+          onChangeItem={(item) => setSearchKeyword(item.value)}
+        />
+      </Spacer>
 
       <PhoneResultsList results={results} />
     </View>
@@ -87,6 +138,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 15,
   },
+  text: {marginLeft: 10},
 });
 
 export default PhoneSearchScreen;

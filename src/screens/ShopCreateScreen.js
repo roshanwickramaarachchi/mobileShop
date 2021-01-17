@@ -191,10 +191,11 @@ const ShopCreateScreen = ({navigation}) => {
         setLatitude(position.coords.latitude);
         setLongitude(position.coords.longitude);
         // setUserLocation(position.coords);
+        console.log('success get user current location');
       },
-      (error) => {
+      (err) => {
         // See error code charts below.
-        console.log(error.code, error.message);
+        console.log('get user location error: ' + err);
       },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
@@ -373,14 +374,16 @@ const ShopCreateScreen = ({navigation}) => {
                 longitude: longitude,
               }}
               //image={images.mapMarker}
-              draggable={true}
-              onDragEnd={(e) => {
-                console.log('dragEnd', e.nativeEvent.coordinate);
+              draggable
+              onDragEnd={(data) => {
+                //console.log(data.nativeEvent.coordinate);
+                setLatitude(data.nativeEvent.coordinate.latitude);
+                setLongitude(data.nativeEvent.coordinate.longitude);
               }}
               title={name}
             />
           </MapView>
-         {/* ******************************************************************************** */}
+          {/* ******************************************************************************** */}
           <Spacer>
             <Button title="save shop" onPress={createShop} />
           </Spacer>
