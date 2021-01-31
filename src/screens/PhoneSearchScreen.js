@@ -16,7 +16,7 @@ const PhoneSearchScreen = () => {
   const [isLoading, setIsLoading] = useState(false); // for loading spinner
   const [searchKeyword, setSearchKeyword] = useState('brand'); //user can select one keyword using drop down picker
 
-  // get data from Api and data set to 'result'
+  // get phones data from Api and data set to 'result'
   const searchApi = async (searchTerm) => {
     setIsLoading(true); // for loading spinner
     try {
@@ -35,8 +35,8 @@ const PhoneSearchScreen = () => {
   };
   //console.log(results);
 
-  // get all users data, also can d=search and then get relevent shop data
-  const getShopsData = async (searchTerm) => {
+  // get all phones data, also can search and then get relevent phone data
+  const getPhonesData = async (searchTerm) => {
     try {
       setIsLoading(true); // for loading spinner
       const response = await axios({
@@ -60,7 +60,7 @@ const PhoneSearchScreen = () => {
   // run this arror funcion only when components is first rerender
   //the is no parameter pass, so all shop details can get
   useEffect(() => {
-    getShopsData();
+    getPhonesData();
   }, []);
 
   return (
@@ -81,7 +81,7 @@ const PhoneSearchScreen = () => {
       <SearchBar
         term={term}
         onTermChange={setTerm}
-        onTermSubmit={() => searchApi(term)}
+        onTermSubmit={() => getPhonesData(term)}
       />
 
       <Text style={styles.text}>select item for search</Text>

@@ -20,6 +20,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {images} from '../../constants';
 import MapView, {Marker} from 'react-native-maps';
+import {Rating, AirbnbRating} from 'react-native-ratings';
 
 const ProfileScreen = ({navigation}) => {
   const [fix, setFix] = useState(1); // this is for fix location button error
@@ -232,6 +233,26 @@ const ProfileScreen = ({navigation}) => {
               {/* ******************************************************************************************* */}
               {/* shop details */}
               <View style={styles.fontDetails}>
+                <AirbnbRating
+                  isDisabled
+                  count={10}
+                  showRating={false}
+                  selectedColor="#0f8bf1"
+                  defaultRating={shopData.averageRating}
+                  size={15}
+                  starContainerStyle={{
+                    alignSelf: 'flex-start',
+                    backgroundColor: 'transparent',
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('ProfileReviews', {shopId: shopData.id})
+                  }>
+                  <Text style={styles.reviewTitle}>Rating and reviews</Text>
+                </TouchableOpacity>
+
+                <Text>Rating: {shopData.averageRating}</Text>
                 <Text>Name: {shopData.name}</Text>
                 <Text>Description: {shopData.description}</Text>
                 <Text>Phone No: {shopData.phone}</Text>
@@ -250,20 +271,20 @@ const ProfileScreen = ({navigation}) => {
                 borderRadius: 8,
               }}
               region={{
-                latitude: shopData.latitude,
-                longitude: shopData.longitude,
+                latitude: Number(shopData.latitude),
+                longitude: Number(shopData.longitude),
                 latitudeDelta: 0.001,
                 longitudeDelta: 0.001,
               }}
               showsUserLocation={true}
-              showsMyLocationButton={true}              
+              showsMyLocationButton={true}
               onMapReady={() => setFix(0)} // this is for fix location button error
             >
               {/* map Marker */}
               <Marker
                 coordinate={{
-                  latitude: shopData.latitude,
-                  longitude: shopData.longitude,
+                  latitude: Number(shopData.latitude),
+                  longitude: Number(shopData.longitude),
                 }}
                 //image={images.mapMarker}
                 // draggable

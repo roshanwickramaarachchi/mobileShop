@@ -9,37 +9,18 @@ import axios from 'axios';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 const ShopSearchScreen = ({navigation}) => {
-  const [term, setTerm] = useState('');
-  const [results, setResults] = useState([]); // results= shops
+  const [term, setTerm] = useState(''); // search bar text
+  const [results, setResults] = useState([]); // shops data
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false); // for loading spinner
-  const [searchKeyword, setSearchKeyword] = useState('name'); //user can select one keyword using drop down picker
+  const [searchKeyword, setSearchKeyword] = useState('town'); //user can select one keyword using drop down picker
 
   // this.state = {
   //   country: 'uk',
   // };
+ 
 
-  // // get data from Api and data set to 'result'
-  // const searchApi = async (searchTerm) => {
-  //   try {
-  //     setIsLoading(true); // for loading spinner
-  //     const response = await mobileShopApi.get('/api/v1/bootcamps', {
-  //       params: {
-  //         town: searchTerm,
-  //       },
-  //     });
-  //     setResults(response.data.data);
-  //     setIsLoading(false); // for loading spinner
-  //     setErrorMessage('');
-  //   } catch (err) {
-  //     setErrorMessage('Something went wrong');
-  //     console.log(err);
-  //     setIsLoading(false); // for loading spinner
-  //   }
-  // };
-  // //console.log(results);
-
-  // get all users data, also can d=search and then get relevent shop data
+  // search and then get relevent shop data
   const getShopsData = async (searchTerm) => {
     try {
       setIsLoading(true); // for loading spinner
@@ -51,7 +32,7 @@ const ShopSearchScreen = ({navigation}) => {
         // },
       });
       setResults(response.data.data);
-      console.log(response.data);
+      //console.log(response.data);
       console.log('success get shops data:');
       setIsLoading(false); // for loading spinner
     } catch (err) {
@@ -64,7 +45,7 @@ const ShopSearchScreen = ({navigation}) => {
   // run this arror funcion only when components is first rerender
   //the is no parameter pass, so all shop details can get
   useEffect(() => {
-    getShopsData();
+    getShopsData('galle');
   }, []);
 
   return (
