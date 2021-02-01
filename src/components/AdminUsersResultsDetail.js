@@ -11,6 +11,7 @@ const AdminUsersResultsDetail = ({userData, navigation}) => {
   const [adminEmail, setAdminEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({userData});
+  //console.log(userData.name);
 
   // delete user data
   const deleteUser = async () => {
@@ -31,7 +32,7 @@ const AdminUsersResultsDetail = ({userData, navigation}) => {
       );
 
       //if selected user email and user email is get using token, equl, then can not delet selected user(can not delete admin data)
-      if (userDataFromToken.data.data.email != userData.email) {
+      if (userDataFromToken.data.data.email !== userData.email) {
         const response = await axios({
           method: 'delete',
           url: `${BASE_URL}/api/v1/users/${userData._id}`,
@@ -58,6 +59,7 @@ const AdminUsersResultsDetail = ({userData, navigation}) => {
   }
 
   return (
+    
     // individual user data in flat list
     <View style={styles.container}>
       {/* loading spinner */}

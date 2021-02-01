@@ -14,6 +14,29 @@ const AdminUsersSearchScreen = ({navigation}) => {
   const [term, setTerm] = useState('');
   const [usersData, setUsersData] = useState();
   const [errorMessage, setErrorMessage] = useState('');
+  const [role, setRole] = useState('');
+
+  //console.log(usersData);
+
+  const getLoggedUserData = async () => {
+    try {
+      setIsLoading(true); // for loading spinner
+      var token = await AsyncStorage.getItem('token'); // get Token from async storage
+      // calling api get logged user data using token
+      const loggedUserData = await axios({
+        method: 'get',
+        url: `${BASE_URL}/api/v1/auth/me`,
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      });
+      setRole(loggedUserData.data.data.role)
+    } catch (err) {
+      console.log('api call getLogggedUserData ' + err);
+      setIsLoading(false);
+      setErrorMessage('Something went wrong');
+    }
+  };
 
   // get all users data
   const getUsersData = async (searchTerm) => {
@@ -31,7 +54,7 @@ const AdminUsersSearchScreen = ({navigation}) => {
         },
       });
       setUsersData(response.data.data);
-      //console.log(response.data.data);
+      console.log(response.data.data);
       console.log('success get users data:');
       setIsLoading(false); // for loading spinner
     } catch (err) {
@@ -45,7 +68,13 @@ const AdminUsersSearchScreen = ({navigation}) => {
   //the is no parameter pass, so all shop details can get
   useEffect(() => {
     getUsersData();
+    getLoggedUserData();
   }, []);
+
+  // if logged usersData,is not user or publisher ,then return null 
+  if (role === 'user' || role === 'publisher') {
+    return null;
+  }
 
   return (
     <View style={styles.container}>

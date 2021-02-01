@@ -20,19 +20,30 @@ import ProfilePhonesScreen from './src/screens/ProfilePhonesScreen';
 import ProfilePhoneScreen from './src/screens/ProfilePhoneScreen';
 import PhoneCreateScreen from './src/screens/PhoneCreateScreen';
 import PhoneEditScreen from './src/screens/PhoneEditScreen';
+import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
+import PasswordResetScreen from './src/screens/PasswordResetScreen';
 import AdminUsersSearchScreen from './src/screens/AdminUsersSearchScreen';
 import AdminUserCreateScreen from './src/screens/AdminUserCreateScreen';
 import AdminUserEditScreen from './src/screens/AdminUserEditScreen';
+import MapSearchScreen from './src/screens/MapSearchScreen';
+import ReviewsScreen from './src/screens/ReviewsScreen';
+import ReviewCreateScreen from './src/screens/ReviewCreateScreen';
+import ShopMapScreen from './src/screens/ShopMapScreen';
+import ProfileReviewsScreen from './src/screens/ProfileReviewsScreen';
+import SplashScreen from './src/screens/SplashScreen';
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
 import ResolveAuthscreen from './src/screens/ResolveAuthScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const switchNavigator = createSwitchNavigator({
+  Splash: SplashScreen,
   ResolveAuth: ResolveAuthscreen, //this page help to go to home page without seening login page
   loginFlow: createStackNavigator({
     Signin: {screen: SigninScreen},
     Signup: {screen: SignupScreen},
+    ForgotPassword: {screen: ForgotPasswordScreen},
+    PasswordReset: {screen: PasswordResetScreen}
   }),
   mainFlow: createBottomTabNavigator({
     Home: {
@@ -54,8 +65,12 @@ const switchNavigator = createSwitchNavigator({
         ShopSearch: ShopSearchScreen,
         PhoneSearch: PhoneSearchScreen,
         Shop: ShopScreen,
+        Reviews: ReviewsScreen,
+        ReviewCreate: ReviewCreateScreen,
         PhoneList: PhoneListScreen,
+        ShopMap: ShopMapScreen,
         Phone: PhoneScreen,
+        MapSearch: MapSearchScreen,
       }),
       navigationOptions: {
         tabBarIcon: ({tintColor}) => (
@@ -78,6 +93,7 @@ const switchNavigator = createSwitchNavigator({
         AdminUsersSearch: AdminUsersSearchScreen,
         AdminUserCreate: AdminUserCreateScreen,
         AdminUserEdit: AdminUserEditScreen,
+        ProfileReviews: ProfileReviewsScreen,
       }),
       navigationOptions: {
         tabBarIcon: ({tintColor}) => (

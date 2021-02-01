@@ -5,7 +5,7 @@ import {withNavigation} from 'react-navigation';
 
 
 const AdminUsersResultList = ({usersData, navigation}) => {
-  //console.log('usersData');
+  //console.log(usersData);
   return (
     <View>
       {/*all users list*/}
