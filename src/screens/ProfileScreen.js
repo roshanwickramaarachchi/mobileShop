@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import {Context as AuthContext} from '../context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import {Context as ShopContext} from '../context/ShopContext';
 import Spacer from '../components/Spacer';
 import {NavigationEvents} from 'react-navigation';
 // import jwt_decode from 'jwt-decode';
@@ -25,8 +24,8 @@ import {Rating, AirbnbRating} from 'react-native-ratings';
 const ProfileScreen = ({navigation}) => {
   const [fix, setFix] = useState(1); // this is for fix location button error
   const [isLoading, setIsLoading] = useState(false); //for loading spinner
-  const [loadingText, setLoadingText] = useState(''); //for loading spinner text
-  const {signout} = useContext(AuthContext);
+  // const [loadingText, setLoadingText] = useState(''); //for loading spinner text
+  // const {signout} = useContext(AuthContext);
   // const [userId, setUserId] = useState(); // using token get logged user id
   const [shopData, setShopData] = useState();
   const [errorMessage, setErrorMessage] = useState('');
@@ -77,8 +76,11 @@ const ProfileScreen = ({navigation}) => {
 
   // get relevent logged user created shop data
   const getShopData = async () => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 20000);
     try {
-      setLoadingText('Loading...'); // for loading spinner text
+      // setLoadingText('Loading...'); // for loading spinner text
       setIsLoading(true); // for loading spinner
       var token = await AsyncStorage.getItem('token'); // get Token from async storage
       // calling api get logged user data using token
@@ -101,7 +103,7 @@ const ProfileScreen = ({navigation}) => {
       setShopData(response.data.data[0]);
       console.log('success get shop');
       setIsLoading(false); //for loading spinner
-      setLoadingText(''); //for loading spinner text
+      // setLoadingText(''); //for loading spinner text
       setErrorMessage('');
     } catch (err) {
       console.log('api call getShopData ' + err);
@@ -113,8 +115,11 @@ const ProfileScreen = ({navigation}) => {
 
   // delete logged user created shop
   const deleteShop = async () => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 20000);
     try {
-      setLoadingText('Deleting...'); //for loading spinner text
+      // setLoadingText('Deleting...'); //for loading spinner text
       setIsLoading(true); //for loading spinner
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
@@ -128,8 +133,34 @@ const ProfileScreen = ({navigation}) => {
       console.log('success delete shop');
       setShopData(null);
       setIsLoading(false); //for loading spinner
-      setLoadingText(''); //for loading spinner text
+      // setLoadingText(''); //for loading spinner text
       setErrorMessage('');
+    } catch (err) {
+      console.log('api call deleteShop ' + err);
+      setIsLoading(false); //for loading spinner
+      setErrorMessage('Something went wrong');
+    }
+  };
+
+  // log out user
+  const signOut = async () => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 20000);
+    try {
+      // setLoadingText('Logging out...'); //for loading spinner text
+      setIsLoading(true); //for loading spinner
+      await AsyncStorage.removeItem('token');
+      const response = await axios({
+        method: 'get',
+        url: `${BASE_URL}/api/v1/auth/logout`,
+      });
+      //console.log(response);
+      console.log('success sign out');
+      setIsLoading(false); //for loading spinner
+      // setLoadingText(''); //for loading spinner text
+      setErrorMessage('');
+      navigation.navigate('Signin');
     } catch (err) {
       console.log('api call deleteShop ' + err);
       setIsLoading(false); //for loading spinner
@@ -147,7 +178,7 @@ const ProfileScreen = ({navigation}) => {
   // using this function call multiple fuction at sametime
 
   return (
-    <View>
+    <View style={styles.container}>
       {/* error message */}
       {errorMessage ? (
         <Text style={styles.errorMesssage}>{errorMessage}</Text>
@@ -156,7 +187,7 @@ const ProfileScreen = ({navigation}) => {
       {/* loading-spinner-overlay, until get shop data from database this will run */}
       <Spinner
         visible={isLoading}
-        textContent={loadingText}
+        // textContent={loadingText}
         textStyle={styles.spinnerTextStyle}
       />
 
@@ -174,7 +205,7 @@ const ProfileScreen = ({navigation}) => {
 
         {/* sign out button */}
         <Spacer>
-          <Button title="Sign Out" onPress={signout} />
+          <Button title="Sign Out" onPress={signOut} />
         </Spacer>
 
         {/* if user created shop in database this button will hide  */}
@@ -187,34 +218,56 @@ const ProfileScreen = ({navigation}) => {
           </Spacer>
         ) : null}
 
-        {/* if user created shop in database this button will show  */}
         {shopData ? (
-          <Spacer>
+          <View style={styles.buttonContainer}>
+            <View style={{width: 90}}>
+              <Button
+                title="Edit"
+                onPress={() => navigation.navigate('ShopEdit', {shopData})} // all shop data pass to shopEditScreen
+              />
+            </View>
+            <View style={{width: 90}}>
+              <Button title="Delete" onPress={deleteShop} />
+            </View>
+            <View style={{width: 90}}>
+              <Button
+                title="phones"
+                onPress={() =>
+                  navigation.navigate('ProfilePhones', {shopId: shopData._id})
+                }
+              />
+            </View>
+          </View>
+        ) : null}
+
+        {/* if user created shop in database this button will show  */}
+        {/* {shopData ? (
+          <View style={{width: 90}}>
             <Button
-              title="Edit Shop"
+              title="Edit"
               onPress={() => navigation.navigate('ShopEdit', {shopData})} // all shop data pass to shopEditScreen
             />
-          </Spacer>
-        ) : null}
+          </View>
+        ) : null} */}
 
         {/* if user created shop in database this button will show  */}
-        {shopData ? (
-          <Spacer>
-            <Button title="Delete Shop" onPress={deleteShop} />
-          </Spacer>
-        ) : null}
+        {/* {shopData ? (
+          <View style={{width: 90}}>
+            <Button title="Delete" onPress={deleteShop} />
+          </View>
+        ) : null} */}
 
         {/* if user created shop in database this button will show  */}
-        {shopData ? (
-          <Spacer>
+        {/* {shopData ? (
+          <View style={{width: 90}}>
             <Button
-              title="Show phone List"
+              title="phones"
               onPress={() =>
                 navigation.navigate('ProfilePhones', {shopId: shopData._id})
               }
             />
-          </Spacer>
-        ) : null}
+          </View>
+        ) : null} */}
 
         {/* view shop */}
         {/* if there is no shop in database(check shopData.name) shop data not view */}
@@ -249,14 +302,29 @@ const ProfileScreen = ({navigation}) => {
                   onPress={() =>
                     navigation.navigate('ProfileReviews', {shopId: shopData.id})
                   }>
-                  <Text style={styles.reviewTitle}>Rating and reviews</Text>
+                  <Text style={styles.reviewsLink}>Rating and reviews</Text>
                 </TouchableOpacity>
 
-                <Text>Rating: {shopData.averageRating}</Text>
-                <Text>Name: {shopData.name}</Text>
-                <Text>Description: {shopData.description}</Text>
-                <Text>Phone No: {shopData.phone}</Text>
-                <Text>Email: {shopData.email}</Text>
+                {/* shop details */}
+                <Text>
+                  <Text style={styles.detailStyle}>Rating: </Text>
+                  {shopData.averageRating}
+                </Text>
+                <Text>
+                  <Text style={styles.detailStyle}>Name:</Text> {shopData.name}
+                </Text>
+                <Text>
+                  <Text style={styles.detailStyle}>Description:</Text>{' '}
+                  {shopData.description}
+                </Text>
+                <Text>
+                  <Text style={styles.detailStyle}>Phone No:</Text>{' '}
+                  {shopData.phone}
+                </Text>
+                <Text>
+                  <Text style={styles.detailStyle}>Email:</Text>{' '}
+                  {shopData.email}
+                </Text>
               </View>
             </View>
             {/* map ********************************************************************************************/}
@@ -269,6 +337,8 @@ const ProfileScreen = ({navigation}) => {
                 justifyContent: 'center',
                 alignSelf: 'center',
                 borderRadius: 8,
+                borderWidth: 1,
+                borderColor: 'black',
               }}
               region={{
                 latitude: Number(shopData.latitude),
@@ -278,7 +348,7 @@ const ProfileScreen = ({navigation}) => {
               }}
               showsUserLocation={true}
               showsMyLocationButton={true}
-              onMapReady={() => setFix(0)} // this is for fix location button error
+              onMapReady={() => setFix(10)} // this is for fix location button error
             >
               {/* map Marker */}
               <Marker
@@ -303,6 +373,13 @@ ProfileScreen.navigationOptions = ({navigation}) => {
   return {
     title: 'ProfileScreen',
     headerTitleAlign: 'center',
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
     headerRight: () => (
       <TouchableOpacity onPress={() => navigation.navigate('AdminUsersSearch')}>
         <Icon name="admin-panel-settings" size={25} />
@@ -312,6 +389,9 @@ ProfileScreen.navigationOptions = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   shopImage: {
     height: 200,
     width: '95%',
@@ -332,6 +412,18 @@ const styles = StyleSheet.create({
   },
   spinnerTextStyle: {
     color: '#FFF',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+  },
+  reviewsLink: {
+    fontWeight: 'bold',
+    color: '#0f8bf1',
+  },
+  detailStyle: {
+    fontWeight: 'bold',
   },
 });
 

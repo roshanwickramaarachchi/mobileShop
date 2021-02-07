@@ -14,7 +14,7 @@ const AdminUsersSearchScreen = ({navigation}) => {
   const [term, setTerm] = useState('');
   const [usersData, setUsersData] = useState();
   const [errorMessage, setErrorMessage] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('user');
 
   //console.log(usersData);
 
@@ -66,7 +66,7 @@ const AdminUsersSearchScreen = ({navigation}) => {
 
   // run this arror funcion only when components is first rerender
   //the is no parameter pass, so all shop details can get
-  useEffect(() => {
+  useEffect(() => {    
     getUsersData();
     getLoggedUserData();
   }, []);
@@ -78,6 +78,7 @@ const AdminUsersSearchScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      
       <NavigationEvents onWillFocus={() => getUsersData()} />
 
       {/* loading spinner it will run until api calle finish */}
@@ -86,11 +87,13 @@ const AdminUsersSearchScreen = ({navigation}) => {
         textContent={'Loading...'}
         textStyle={styles.spinnerTextStyle}
       />
-
+      
       {/* error messsage indicate in bellow seachbar  */}
       {errorMessage ? (
         <Text style={styles.errorMesssage}>{errorMessage}</Text>
       ) : null}
+
+       
 
       {/* search bar */}
       <SearchBar
@@ -108,6 +111,7 @@ const AdminUsersSearchScreen = ({navigation}) => {
 
       {/* all suser data passe to AdminUsersResultsList  */}
       <AdminUsersResultsList usersData={usersData} />
+      
     </View>
   );
 };
@@ -116,10 +120,13 @@ AdminUsersSearchScreen.navigationOptions = () => {
   return {
     title: 'Search Screen',
     headerTitleAlign: 'center',
-    // headerTitleStyle: {
-    //   textAlign: 'center',
-    //   flex:1,
-    // },
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 };
 

@@ -22,7 +22,7 @@ import {images} from '../../constants';
 import MapView, {Marker} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 
-const ShopCreateScreen = ({navigation}) => {  
+const ShopCreateScreen = ({navigation}) => {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
 
@@ -33,11 +33,11 @@ const ShopCreateScreen = ({navigation}) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  // const [town, setTown] = useState('');
-  // const [address, setAddress] = useState('');
-  // const [phone, setPhone] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [website, setWebsite] = useState('');
+  const [town, setTown] = useState('');
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [website, setWebsite] = useState('');
 
   // avoid loading spinner run limitlus time
   // useEffect(() => {
@@ -48,6 +48,9 @@ const ShopCreateScreen = ({navigation}) => {
 
   // create shop using api(post data to database)
   const createShop = async () => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 20000);
     try {
       setIsLoading(true); // for loading spinner
       var token = await AsyncStorage.getItem('token');
@@ -60,11 +63,11 @@ const ShopCreateScreen = ({navigation}) => {
           description,
           latitude,
           longitude,
-          // town,
-          // address,
-          // phone,
-          // email,
-          // website,
+          town,
+          address,
+          phone,
+          email,
+          website,
         },
         headers: {
           //'Content-Type': 'application/json',
@@ -82,7 +85,7 @@ const ShopCreateScreen = ({navigation}) => {
       setErrorMessage('Something went wrong');
     }
   };
-   //******************************************************************************************
+  //******************************************************************************************
   // using image picker get image from camera, and get image data
   const takePhotoFromCamera = () => {
     const options = {
@@ -266,11 +269,11 @@ const ShopCreateScreen = ({navigation}) => {
   // }, []);
   //************************************************************************************ */
   return (
-    <>
+    <View style={styles.continer}>
       {/* loading-spinner-overlay, until post shop data to database this will run */}
       <Spinner
         visible={isLoading}
-        textContent={'Creating...'}
+        // textContent={'Creating...'}
         textStyle={styles.spinnerTextStyle}
       />
 
@@ -307,39 +310,70 @@ const ShopCreateScreen = ({navigation}) => {
           </Spacer>
 
           <Text style={styles.label}>Enter Shop Name:</Text>
-          <TextInput style={styles.input} value={name} onChangeText={setName} />
+          <TextInput
+            placeholder="name"
+            style={styles.input}
+            value={name}
+            onChangeText={setName}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
           <Text style={styles.label}>Enter Description:</Text>
           <TextInput
+            placeholder="description"
             style={styles.input}
             value={description}
             onChangeText={setDescription}
+            autoCapitalize="none"
+            autoCorrect={false}
+            multiline={true}
           />
-          {/* <Text style={styles.label}>Enter Town:</Text>
-          <TextInput style={styles.input} value={town} onChangeText={setTown} />
+          <Text style={styles.label}>Enter Town:</Text>
+          <TextInput
+            placeholder="town"
+            style={styles.input}
+            value={town}
+            onChangeText={setTown}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
           <Text style={styles.label}>Enter Address:</Text>
           <TextInput
+            placeholder="address"
             style={styles.input}
             value={address}
             onChangeText={setAddress}
+            autoCapitalize="none"
+            autoCorrect={false}
+            multiline={true}
           />
           <Text style={styles.label}>Enter Phone No:</Text>
           <TextInput
+            placeholder="phone no"
             style={styles.input}
             value={phone}
             onChangeText={setPhone}
+            autoCapitalize="none"
+            autoCorrect={false}
           />
           <Text style={styles.label}>Enter Email:</Text>
           <TextInput
+            placeholder="test@gmail.com"
             style={styles.input}
             value={email}
             onChangeText={setEmail}
+            autoCapitalize="none"
+            autoCorrect={false}
           />
           <Text style={styles.label}>Enter Website:</Text>
           <TextInput
+            placeholder="https://website.com"
             style={styles.input}
             value={website}
             onChangeText={setWebsite}
-          /> */}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
           {/* ****************************************************************************** */}
           {/* map */}
           <MapView
@@ -389,7 +423,7 @@ const ShopCreateScreen = ({navigation}) => {
           </Spacer>
         </View>
       </ScrollView>
-    </>
+    </View>
   );
 };
 
@@ -397,14 +431,20 @@ ShopCreateScreen.navigationOptions = () => {
   return {
     title: 'Shop Create Screen',
     headerTitleAlign: 'center',
-    // headerTitleStyle: {
-    //   textAlign: 'center',
-    //   flex:1,
-    // },
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 };
 
 const styles = StyleSheet.create({
+  continer: {
+    flex: 1,
+  },
   ShopImage: {
     height: 200,
     width: '95%',
@@ -421,9 +461,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 5,
     margin: 5,
+    borderRadius: 15,
+    marginLeft: 5,
+    marginRight: 5,
   },
   label: {
-    fontSize: 20,
     marginBottom: 10,
     marginLeft: 5,
   },

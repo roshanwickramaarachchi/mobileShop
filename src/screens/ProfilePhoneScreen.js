@@ -1,22 +1,26 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text, Image, Button} from 'react-native';
+import {View, StyleSheet, Text, Image, Button, ScrollView} from 'react-native';
 import {BASE_URL} from '../../constants/constants';
 import axios from 'axios';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spacer from '../components/Spacer';
+import {NavigationEvents} from 'react-navigation';
 
 const ProfilePhoneScreen = ({navigation}) => {
   const phoneId = navigation.getParam('phoneId'); // this id is one phone id,/ this is way to  get information as sesond argument
-
+  const [isLoading, setIsLoading] = useState(true); // for loading spinner
   const [phoneData, setPhoneData] = useState(null); // phoneData = one  phone data
-  const [isLoading, setIsLoading] = useState(false); // for loading spinner
-  const [loadingText, setLoadingText] = useState(''); //for loading spinner text
+  
+  // const [loadingText, setLoadingText] = useState(''); //for loading spinner text
   const [errorMessage, setErrorMessage] = useState('');
 
   // get tuched phone data using api
   const getPhoneData = async () => {
-    setLoadingText('Loading...'); // for loading spinner text
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 20000);
+    // setLoadingText('Loading...'); // for loading spinner text
     setIsLoading(true); // for loding spinner
     try {
       const response = await axios({
@@ -29,7 +33,7 @@ const ProfilePhoneScreen = ({navigation}) => {
       );
       setPhoneData(response.data.data);
       setIsLoading(false);
-      setLoadingText(''); // for loading spinner text
+      // setLoadingText(''); // for loading spinner text
       setErrorMessage('');
     } catch (err) {
       console.log('api call getPhonsData ' + err);
@@ -40,8 +44,11 @@ const ProfilePhoneScreen = ({navigation}) => {
 
   // delete viewed phone
   const deletePhone = async () => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 20000);
     try {
-      setLoadingText('Deleting...'); // for loading spinner text
+      // setLoadingText('Deleting...'); // for loading spinner text
       setIsLoading(true); // for loading spinner
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
@@ -55,7 +62,7 @@ const ProfilePhoneScreen = ({navigation}) => {
       console.log('success delete phone');
       navigation.navigate('ProfilePhones');
       setIsLoading(false); // for loading spinner
-      setLoadingText(''); // for loading spinner text
+      // setLoadingText(''); // for loading spinner text
     } catch (err) {
       console.log('api call deleteShop ' + err);
       setIsLoading(false);
@@ -72,10 +79,11 @@ const ProfilePhoneScreen = ({navigation}) => {
   }
 
   return (
-    <View>
+    <ScrollView style={styles.container}>
+      <NavigationEvents onWillFocus={() => getPhoneData()} />
       <Spinner
         visible={isLoading}
-        textContent={loadingText}
+        // textContent={'Loading...'}
         textStyle={styles.spinnerTextStyle}
       />
 
@@ -99,13 +107,21 @@ const ProfilePhoneScreen = ({navigation}) => {
 
       <Image style={styles.image} source={{uri: phoneData.image}} />
       <View style={styles.fontDetail}>
-        <Text>Price Rs: {phoneData.price}</Text>
-        <Text>Brand: {phoneData.brand}</Text>
-        <Text>Model: {phoneData.model}</Text>
-        <Text>Edition: {phoneData.edition}</Text>
-        <Text>Features: {phoneData.features}</Text>
+        <Text>
+          <Text style={styles.title}>Price Rs: </Text>
+          {phoneData.price}
+        </Text>
+        <Text>
+          <Text style={styles.title}>Brand:</Text> {phoneData.brand}
+        </Text>
+        <Text>
+          <Text style={styles.title}>Model:</Text> {phoneData.model}
+        </Text>
+        <Text>
+          <Text style={styles.title}>Features:</Text> {phoneData.features}
+        </Text>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -113,10 +129,13 @@ ProfilePhoneScreen.navigationOptions = () => {
   return {
     title: 'Phone Screen',
     headerTitleAlign: 'center',
-    // headerTitleStyle: {
-    //   textAlign: 'center',
-    //   flex:1,
-    // },
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 };
 
@@ -131,16 +150,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   fontDetail: {
-    marginLeft: 5,
+    marginLeft: 15,
   },
   spinnerTextStyle: {
     color: '#FFF',
+  },
+  title: {
+    fontWeight: 'bold',
   },
   errorMesssage: {
     fontSize: 16,
     color: 'red',
     marginLeft: 15,
     marginTop: 15,
+    textAlign: 'center',
   },
 });
 

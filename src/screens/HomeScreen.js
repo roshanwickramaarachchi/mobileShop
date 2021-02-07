@@ -126,6 +126,13 @@ HomeScreen.navigationOptions = () => {
   return {
     title: 'Home Screen',
     headerTitleAlign: 'center',
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
     headerLeft: () => (
       <TouchableOpacity>
         <Icon name="ios-menu" size={25} />

@@ -1,11 +1,15 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Image} from 'react-native';
 import {Button} from 'react-native-elements';
 import Spacer from '../components/Spacer';
+import {images} from '../../constants';
 
 const SearchScreen = ({navigation}) => {
   return (
-    <View>
+    <View style={styles.container}>
+      <View >
+        <Image source={images.searchScreen} style={styles.image}/>
+      </View>
       <Spacer>
         <Button
           title="search shops"
@@ -26,13 +30,26 @@ SearchScreen.navigationOptions = () => {
   return {
     title: 'Search Screen',
     headerTitleAlign: 'center',
-    // headerTitleStyle: {
-    //   textAlign: 'center',
-    //   flex:1,
-    // },
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({ 
+  container: {
+    flex: 1,
+  },
+  image: {
+    height: 400,
+    width: '95%',
+    alignSelf: 'center',
+    borderRadius: 8,
+  }
+});
 
 export default SearchScreen;

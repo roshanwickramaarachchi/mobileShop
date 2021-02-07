@@ -22,6 +22,10 @@ const ShopSearchScreen = ({navigation}) => {
 
   // search and then get relevent shop data
   const getShopsData = async (searchTerm) => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 20000);
+
     try {
       setIsLoading(true); // for loading spinner
       const response = await axios({
@@ -49,7 +53,7 @@ const ShopSearchScreen = ({navigation}) => {
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       {/* loading spinner it will run until api calle finish */}
       <Spinner
         visible={isLoading}
@@ -93,10 +97,22 @@ const ShopSearchScreen = ({navigation}) => {
           ]}
           defaultValue={searchKeyword}
           containerStyle={{height: 40}}
-          style={{backgroundColor: '#fafafa'}}
+          style={{backgroundColor: '#F0EEEE'}}
           itemStyle={{justifyContent: 'flex-start'}}
-          dropDownStyle={{backgroundColor: '#fafafa'}}
+          dropDownStyle={{backgroundColor: '#F0EEEE'}}
           onChangeItem={(item) => setSearchKeyword(item.value)}
+          labelStyle={{
+            fontSize: 14,
+            textAlign: 'left',
+            color: '#000',
+          }}
+          selectedLabelStyle={{
+            color: '#39739d',
+          }}
+          placeholderStyle={{
+            fontWeight: 'bold',
+            textAlign: 'center'
+        }}
         />
       </Spacer>
 
@@ -105,20 +121,28 @@ const ShopSearchScreen = ({navigation}) => {
   );
 };
 
-// ShopSearchScreen.navigationOptions = ({navigation, searchApi}) => {
-//   return {
-//     title: 'Shop Search Screen',
-//     headerTitleAlign: 'center',
-//     headerRight: () => (
-//       <TouchableOpacity
-//         onPress={() => navigation.navigate('MapSearch', {results: results})}>
-//         <Icon name="map-outline" size={25} />
-//       </TouchableOpacity>
-//     ),
-//   };
-// };
+ShopSearchScreen.navigationOptions = ({navigation}) => {
+  return {
+    title: 'Shop Search Screen',
+    headerTitleAlign: 'center',
+    fontFamily: 'HelveticaNeue',
+    fontSize: 30,
+    fontWeight: '700',
+    // lineHeight: 40,
+    color: '#3F414E',
+    // headerRight: () => (
+    //   <TouchableOpacity
+    //     onPress={() => navigation.navigate('MapSearch', {results: results})}>
+    //     <Icon name="map-outline" size={25} />
+    //   </TouchableOpacity>
+    // ),
+  };
+};
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   headerFont: {
     marginTop: 8,
     marginHorizontal: 24,

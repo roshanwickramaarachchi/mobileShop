@@ -1,55 +1,58 @@
-import {Dimensions} from 'react-native';
-const {width, height} = Dimensions.get('window');
+// import {Dimensions} from 'react-native';
+// const {width, height} = Dimensions.get('window');
 
 export const COLORS = {
-  // base colors
-  primary: '#5390ff', // Blue
-  secondary: '#cacfd9', // Gray
-
-  // colors
-  black: '#1E1F20',
-  white: '#FFFFFF',
-  lightGray: '#eff2f5',
-  gray: '#8b9097',
+  primary: '#8E97FD',
+  white: '#ffff',
+  whiteShade: '#FFECCC',
+  whiteShadeBg: '#EBEAEC',
+  gray: '#A1A4B2',
+  bg: '#F2F3F7',
+  secondaryBg: '#E5E5E5',
+  darkBg: '#333242',
+  lightBg: '#ECD3C2',
+  heading: '#3F414E',
+  facebookBg: '#7583CA',
 };
-export const SIZES = {
-  // global sizes
-  base: 8,
-  font: 14,
-  radius: 12,
-  padding: 24,
+// export const SIZES = {
+//   // global sizes
+//   base: 8,
+//   font: 14,
+//   radius: 12,
+//   padding: 24,
 
-  // font sizes
-  largeTitle: 50,
-  h1: 30,
-  h2: 22,
-  h3: 16,
-  h4: 14,
-  body1: 30,
-  body2: 22,
-  body3: 16,
-  body4: 14,
+//   // font sizes
+//   largeTitle: 50,
+//   h1: 30,
+//   h2: 22,
+//   h3: 16,
+//   h4: 14,
+//   body1: 30,
+//   body2: 22,
+//   body3: 16,
+//   body4: 14,
 
-  // app dimensions
-  width,
-  height,
-};
-export const FONTS = {
-  largeTitle: {
-    fontFamily: 'Roboto-Black',
-    fontSize: SIZES.largeTitle,
-    lineHeight: 55,
-  },
-  h1: {fontFamily: 'Roboto-Black', fontSize: SIZES.h1, lineHeight: 36},
-  h2: {fontFamily: 'Roboto-Bold', fontSize: SIZES.h2, lineHeight: 30},
-  h3: {fontFamily: 'Roboto-Bold', fontSize: SIZES.h3, lineHeight: 22},
-  h4: {fontFamily: 'Roboto-Bold', fontSize: SIZES.h4, lineHeight: 22},
-  body1: {fontFamily: 'Roboto-Regular', fontSize: SIZES.body1, lineHeight: 36},
-  body2: {fontFamily: 'Roboto-Regular', fontSize: SIZES.body2, lineHeight: 30},
-  body3: {fontFamily: 'Roboto-Regular', fontSize: SIZES.body3, lineHeight: 22},
-  body4: {fontFamily: 'Roboto-Regular', fontSize: SIZES.body4, lineHeight: 22},
-};
+//   // app dimensions
+//   width,
+//   height,
+// };
+// export const FONTS = {
+//   largeTitle: {
+//     fontFamily: 'Roboto-Black',
+//     fontSize: SIZES.largeTitle,
+//     lineHeight: 55,
+//   },
+//   h1: {fontFamily: 'Roboto-Black', fontSize: SIZES.h1, lineHeight: 36},
+//   h2: {fontFamily: 'Roboto-Bold', fontSize: SIZES.h2, lineHeight: 30},
+//   h3: {fontFamily: 'Roboto-Bold', fontSize: SIZES.h3, lineHeight: 22},
+//   h4: {fontFamily: 'Roboto-Bold', fontSize: SIZES.h4, lineHeight: 22},
+//   body1: {fontFamily: 'Roboto-Regular', fontSize: SIZES.body1, lineHeight: 36},
+//   body2: {fontFamily: 'Roboto-Regular', fontSize: SIZES.body2, lineHeight: 30},
+//   body3: {fontFamily: 'Roboto-Regular', fontSize: SIZES.body3, lineHeight: 22},
+//   body4: {fontFamily: 'Roboto-Regular', fontSize: SIZES.body4, lineHeight: 22},
+// };
 
-const appTheme = {COLORS, SIZES, FONTS};
+// const appTheme = {COLORS, SIZES, FONTS};
 
-export default appTheme;
+// export default appTheme;
+export default COLORS;

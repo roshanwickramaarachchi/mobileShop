@@ -8,6 +8,9 @@ export const shop3 = require('../assets/images/shop3.jpg');
 export const defaultImage = require('../assets/images/default_image.png');
 export const mapMarker = require('../assets/images/map_marker.png');
 export const phone = require('../assets/images/phone.png');
+export const facebook = require('../assets/images/facebook.png');
+export const google = require('../assets/images/google.png');
+export const searchScreen = require('../assets/images/searchScreen.jpg');
 
 export default {
   sony,
@@ -20,4 +23,7 @@ export default {
   defaultImage,
   mapMarker,
   phone,
+  facebook,
+  google,
+  searchScreen,
 };

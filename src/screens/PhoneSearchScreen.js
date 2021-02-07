@@ -37,6 +37,10 @@ const PhoneSearchScreen = () => {
 
   // get all phones data, also can search and then get relevent phone data
   const getPhonesData = async (searchTerm) => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 20000);
+
     try {
       setIsLoading(true); // for loading spinner
       const response = await axios({
@@ -71,7 +75,7 @@ const PhoneSearchScreen = () => {
         textContent={'Loading...'}
         textStyle={styles.spinnerTextStyle}
       />
-      
+
       {/* error messsage indicate in bellow seachbar  */}
       {errorMessage ? (
         <Text style={styles.errorMesssage}>{errorMessage}</Text>
@@ -101,10 +105,22 @@ const PhoneSearchScreen = () => {
           ]}
           defaultValue={searchKeyword}
           containerStyle={{height: 40}}
-          style={{backgroundColor: '#fafafa'}}
+          style={{backgroundColor: '#F0EEEE'}}
           itemStyle={{justifyContent: 'flex-start'}}
-          dropDownStyle={{backgroundColor: '#fafafa'}}
+          dropDownStyle={{backgroundColor: '#F0EEEE'}}
           onChangeItem={(item) => setSearchKeyword(item.value)}
+          labelStyle={{
+            fontSize: 14,
+            textAlign: 'left',
+            color: '#000',
+          }}
+          selectedLabelStyle={{
+            color: '#39739d',
+          }}
+          placeholderStyle={{
+            fontWeight: 'bold',
+            textAlign: 'center',
+          }}
         />
       </Spacer>
 
@@ -117,6 +133,11 @@ PhoneSearchScreen.navigationOptions = () => {
   return {
     title: 'Phone Search Screen',
     headerTitleAlign: 'center',
+    fontFamily: 'HelveticaNeue',
+    fontSize: 30,
+    fontWeight: '700',
+    // lineHeight: 40,
+    color: '#3F414E',
     // headerTitleStyle: {
     //   textAlign: 'center',
     //   flex:1,
@@ -125,6 +146,9 @@ PhoneSearchScreen.navigationOptions = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   headerFont: {
     marginTop: 8,
     marginHorizontal: 24,

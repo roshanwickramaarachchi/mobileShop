@@ -11,12 +11,15 @@ const ProfilePhoneScreen = ({navigation}) => {
   const shopId = navigation.getParam('shopId'); // get shop id from ProfileScreen
   console.log('success get shop _id from ProfileScreen, shop _id: ' + shopId);
 
-  const [isLoading, setIsLoading] = useState(false); // loading spinner
+  const [isLoading, setIsLoading] = useState(true); // loading spinner
   const [phonesData, setPhonesData] = useState([]);  
   const [errorMessage, setErrorMessage] = useState('');
 
   // get logged user created all phone list
   const getPhonesData = async () => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 20000);
     setIsLoading(true); // for loading spinner
     try {
       const response = await axios({
@@ -45,7 +48,7 @@ const ProfilePhoneScreen = ({navigation}) => {
       
       <Spinner
         visible={isLoading}
-        textContent={'Loading...'}
+        // textContent={'Loading...'}
         textStyle={styles.spinnerTextStyle}
       />
 
@@ -71,14 +74,17 @@ ProfilePhoneScreen.navigationOptions = () => {
   return {
     title: 'Phone List Screen',
     headerTitleAlign: 'center',
-    // headerTitleStyle: { 
-    //   textAlign: 'center',
-    //   flex:1, 
-    // },
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({  
   spinnerTextStyle: {
     color: '#FFF',
   },
@@ -87,6 +93,7 @@ const styles = StyleSheet.create({
     color: 'red',
     marginLeft: 15,
     marginTop: 15,
+    textAlign: 'center',
   },
 });
 

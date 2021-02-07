@@ -28,10 +28,15 @@ const PhoneEditScreen = ({navigation}) => {
   const [image, setImage] = useState(phoneData.image); // this is encorded image data
   const [price, setPrice] = useState(phoneData.price);
   const [brand, setBrand] = useState(phoneData.brand);
+  const [model, setModel] = useState(phoneData.model);
+  const [features, setFeatures] = useState(phoneData.features);
   const [errorMessage, setErrorMessage] = useState('');
 
   // create shop using api(post data to database)
   const editPhone = async () => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 20000);
     try {
       setIsLoading(true); // for loading spinner
       var token = await AsyncStorage.getItem('token');
@@ -42,6 +47,8 @@ const PhoneEditScreen = ({navigation}) => {
           image,
           price,
           brand,
+          model,
+          features,
         },
         headers: {
           Authorization: 'Bearer ' + token,
@@ -160,7 +167,7 @@ const PhoneEditScreen = ({navigation}) => {
       {/* loading-spinner-overlay, until post shop data to database this will run */}
       <Spinner
         visible={isLoading}
-        textContent={'Editing...'}
+        // textContent={'Editing...'}
         textStyle={styles.spinnerTextStyle}
       />
 
@@ -186,18 +193,40 @@ const PhoneEditScreen = ({navigation}) => {
             />
           </Spacer>
 
-          <Text style={styles.label}>Enter Brand:</Text>
-          <TextInput
-            style={styles.input}
-            value={brand}
-            onChangeText={setBrand}
-          />
           <Text style={styles.label}>Enter Price:</Text>
           <TextInput
             style={styles.input}
             value={price}
             onChangeText={setPrice}
+            autoCapitalize="none"
+            autoCorrect={false}
           />
+          <Text style={styles.label}>Enter Brand:</Text>
+          <TextInput
+            style={styles.input}
+            value={brand}
+            onChangeText={setBrand}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <Text style={styles.label}>Enter Model:</Text>
+          <TextInput
+            style={styles.input}
+            value={model}
+            onChangeText={setModel}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />          
+          <Text style={styles.label}>Enter Features:</Text>
+          <TextInput
+            style={styles.input}
+            value={features}
+            onChangeText={setFeatures}
+            autoCapitalize="none"
+            autoCorrect={false}
+            multiline={true}
+          />
+
 
           <Spacer>
             <Button title="save phone" onPress={editPhone} />
@@ -212,10 +241,13 @@ PhoneEditScreen.navigationOptions = () => {
   return {
     title: 'Phone Edit Screen',
     headerTitleAlign: 'center',
-    // headerTitleStyle: {
-    //   textAlign: 'center',
-    //   flex:1,
-    // },
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 };
 
@@ -235,9 +267,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 5,
     margin: 5,
+    borderRadius: 15,
+    marginLeft: 5,
+    marginRight: 5,
   },
   label: {
-    fontSize: 20,
     marginBottom: 10,
     marginLeft: 5,
   },
@@ -249,6 +283,7 @@ const styles = StyleSheet.create({
     color: 'red',
     marginLeft: 15,
     marginTop: 15,
+    textAlign: 'center',
   },
 });
 

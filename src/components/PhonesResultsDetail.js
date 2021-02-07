@@ -9,10 +9,16 @@ const PhonesResultsDetail = ({result}) => {
     <View style={styles.container}>
       <Image style={styles.image} source={{uri: result.image}} />
       <View style={styles.textContainer}>
-        <Text style={styles.fontPhoneBrand}>Brand: {result.brand}</Text>
-        <Text>Model: {result.model}</Text>
-        <Text>Edition: {result.edition}</Text>
-        <Text>Price Rs:{result.price}</Text>
+        <Text>
+          <Text style={styles.title}>Brand:</Text> {result.brand}
+        </Text>
+        <Text>
+          <Text style={styles.title}>Model:</Text> {result.model}
+        </Text>
+        <Text>
+          <Text style={styles.title}>Price Rs:</Text>
+          {result.price}
+        </Text>
         {/* <Text>
         {result.rating} Stars, {result.review_count} Reviews
       </Text> */}
@@ -33,16 +39,16 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginLeft: 15,
+    justifyContent: 'space-around',
   },
   image: {
     width: 120,
     height: 80,
     borderRadius: 4,
   },
-  fontPhoneBrand: {
+  title: {
     fontWeight: 'bold',
   },
-  
 });
 
 export default PhonesResultsDetail;

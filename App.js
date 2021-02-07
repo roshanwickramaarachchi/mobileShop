@@ -33,12 +33,12 @@ import ProfileReviewsScreen from './src/screens/ProfileReviewsScreen';
 import SplashScreen from './src/screens/SplashScreen';
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
-import ResolveAuthscreen from './src/screens/ResolveAuthScreen';
+// import ResolveAuthscreen from './src/screens/ResolveAuthScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const switchNavigator = createSwitchNavigator({
   Splash: SplashScreen,
-  ResolveAuth: ResolveAuthscreen, //this page help to go to home page without seening login page
+  // ResolveAuth: ResolveAuthscreen, //this page help to go to home page without seening login page
   loginFlow: createStackNavigator({
     Signin: {screen: SigninScreen},
     Signup: {screen: SignupScreen},

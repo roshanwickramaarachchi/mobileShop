@@ -23,10 +23,15 @@ const PhoneCreateScreen = ({navigation}) => {
   const [image, setImage] = useState(''); // this is encorded image data
   const [price, setPrice] = useState('');
   const [brand, setBrand] = useState('');
+  const [model, setModel] = useState('');
+  const [features, setFeatures] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   // create shop using api(post data to database)
   const createPhone = async () => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 20000);
     try {
       setIsLoading(true); // for loading spinner
       var token = await AsyncStorage.getItem('token');
@@ -37,6 +42,8 @@ const PhoneCreateScreen = ({navigation}) => {
           image,
           price,
           brand,
+          model,
+          features,
         },
         headers: {
           Authorization: 'Bearer ' + token,
@@ -187,17 +194,42 @@ const PhoneCreateScreen = ({navigation}) => {
             />
           </Spacer>
 
-          <Text style={styles.label}>Enter Brand:</Text>
-          <TextInput
-            style={styles.input}
-            value={brand}
-            onChangeText={setBrand}
-          />
           <Text style={styles.label}>Enter Price:</Text>
           <TextInput
+            placeholder="price"
             style={styles.input}
             value={price}
             onChangeText={setPrice}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <Text style={styles.label}>Enter Brand:</Text>
+          <TextInput
+            placeholder="brand"
+            style={styles.input}
+            value={brand}
+            onChangeText={setBrand}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <Text style={styles.label}>Enter Model:</Text>
+          <TextInput
+            placeholder="model"
+            style={styles.input}
+            value={model}
+            onChangeText={setModel}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />          
+          <Text style={styles.label}>Enter Features:</Text>
+          <TextInput
+            placeholder="feature"
+            style={styles.input}
+            value={features}
+            onChangeText={setFeatures}
+            autoCapitalize="none"
+            autoCorrect={false}
+            multiline={true}
           />
 
           <Spacer>
@@ -213,10 +245,13 @@ PhoneCreateScreen.navigationOptions = () => {
   return {
     title: 'Phone Create Screen',
     headerTitleAlign: 'center',
-    // headerTitleStyle: {
-    //   textAlign: 'center',
-    //   flex:1,
-    // },
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 };
 
@@ -236,9 +271,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 5,
     margin: 5,
+    borderRadius: 15,
+    marginLeft: 5,
+    marginRight: 5,
   },
   label: {
-    fontSize: 20,
     marginBottom: 10,
     marginLeft: 5,
   },
@@ -250,6 +287,7 @@ const styles = StyleSheet.create({
     color: 'red',
     marginLeft: 15,
     marginTop: 15,
+    textAlign: 'center',
   },
 });
 

@@ -28,14 +28,15 @@ const ShopEditScreen = ({navigation}) => {
   const [description, setDescription] = useState(shopData.description);
   const [latitude, setLatitude] = useState(shopData.latitude);
   const [longitude, setLongitude] = useState(shopData.longitude);
+  const [town, setTown] = useState(shopData.town);
+  const [address, setAddress] = useState(shopData.address);
+  const [phone, setPhone] = useState(shopData.phone);
+  const [email, setEmail] = useState(shopData.email);
+  const [website, setWebsite] = useState(shopData.website);
   const [fix, setFix] = useState(1); // this is for fix location button error
   const [errorMessage, setErrorMessage] = useState('');
-  //const [shopId, setShopId] = useState();
-  // const [town, setTown] = useState('');
-  // const [address, setAddress] = useState('');
-  // const [phone, setPhone] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [website, setWebsite] = useState('');
+  const [shopId, setShopId] = useState();
+  
 
   //   // get relevent logged user created shop data --- this method also work
   //   const getShopData = async () => {
@@ -68,6 +69,9 @@ const ShopEditScreen = ({navigation}) => {
 
   // edit shop details using api(put data to database)
   const editShop = async () => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 20000);
     try {
       setIsLoading(true); // for loading spinner
       var token = await AsyncStorage.getItem('token');
@@ -84,11 +88,11 @@ const ShopEditScreen = ({navigation}) => {
           description,
           latitude,
           longitude,
-          // town,
-          // address,
-          // phone,
-          // email,
-          // website,
+          town,
+          address,
+          phone,
+          email,
+          website,
         },
       });
       //console.log(response.data.data.name);
@@ -179,7 +183,7 @@ const ShopEditScreen = ({navigation}) => {
   //console.log(image);
 
   return (
-    <View>
+    <View style={styles.container}>
       {errorMessage ? (
         <Text style={styles.errorMesssage}>{errorMessage}</Text>
       ) : null}
@@ -187,7 +191,7 @@ const ShopEditScreen = ({navigation}) => {
       {/* loading-spinner-overlay, until get shop data and edited data put to database, this will run */}
       <Spinner
         visible={isLoading}
-        textContent={'Editing...'}
+        // textContent={'Editing...'}
         textStyle={styles.spinnerTextStyle}
       />
 
@@ -195,46 +199,77 @@ const ShopEditScreen = ({navigation}) => {
         <Image style={styles.image} source={{uri: image}} />
         <View>
           <Spacer>
-            <Button title="take image from camera  " onPress={takePhotoFromCamera} />
+            <Button
+              title="take image from camera  "
+              onPress={takePhotoFromCamera}
+            />
           </Spacer>
           <Spacer>
-            <Button title="upload image from gallary" onPress={takePhotoFromLibrary} />
+            <Button
+              title="upload image from gallary"
+              onPress={takePhotoFromLibrary}
+            />
           </Spacer>
-
-          <Text style={styles.label}>Enter Name:</Text>
-          <TextInput style={styles.input} value={name} onChangeText={setName} />
+          
+          {/* shop details */}
+          <Text style={styles.label}>Enter Shop Name:</Text>
+          <TextInput
+            style={styles.input}
+            value={name}
+            onChangeText={setName}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
           <Text style={styles.label}>Enter Description:</Text>
           <TextInput
             style={styles.input}
             value={description}
             onChangeText={setDescription}
+            autoCapitalize="none"
+            autoCorrect={false}
+            multiline={true}
           />
-          {/* <Text style={styles.label}>Enter Town:</Text>
-          <TextInput style={styles.input} value={town} onChangeText={setTown} />
+          <Text style={styles.label}>Enter Town:</Text>
+          <TextInput
+            style={styles.input}
+            value={town}
+            onChangeText={setTown}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
           <Text style={styles.label}>Enter Address:</Text>
           <TextInput
             style={styles.input}
             value={address}
             onChangeText={setAddress}
+            autoCapitalize="none"
+            autoCorrect={false}
+            multiline={true}
           />
           <Text style={styles.label}>Enter Phone No:</Text>
           <TextInput
             style={styles.input}
             value={phone}
             onChangeText={setPhone}
+            autoCapitalize="none"
+            autoCorrect={false}
           />
           <Text style={styles.label}>Enter Email:</Text>
           <TextInput
             style={styles.input}
             value={email}
             onChangeText={setEmail}
+            autoCapitalize="none"
+            autoCorrect={false}
           />
           <Text style={styles.label}>Enter Website:</Text>
           <TextInput
             style={styles.input}
             value={website}
             onChangeText={setWebsite}
-          /> */}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
           {/* ************************************************************************************ */}
           {/* map */}
           <MapView
@@ -294,17 +329,28 @@ ShopEditScreen.navigationOptions = () => {
   return {
     title: 'Shop Edit Screen',
     headerTitleAlign: 'center',
-    // headerTitleStyle: { 
-    //   textAlign: 'center',
-    //   flex:1, 
-    // },
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   image: {
-    width: 400,
     height: 200,
+    width: '95%',
+    marginTop: 10,
+    marginBottom: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderRadius: 8,
   },
   input: {
     fontSize: 18,
@@ -313,9 +359,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 5,
     margin: 5,
+    borderRadius: 15,
+    marginLeft: 5,
+    marginRight: 5,
   },
   label: {
-    fontSize: 20,
     marginBottom: 10,
     marginLeft: 5,
   },
