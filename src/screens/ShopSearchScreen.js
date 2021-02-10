@@ -57,7 +57,7 @@ const ShopSearchScreen = ({navigation}) => {
       {/* loading spinner it will run until api calle finish */}
       <Spinner
         visible={isLoading}
-        textContent={'Loading...'}
+        // textContent={'Loading...'}
         textStyle={styles.spinnerTextStyle}
       />
 
@@ -125,17 +125,13 @@ ShopSearchScreen.navigationOptions = ({navigation}) => {
   return {
     title: 'Shop Search Screen',
     headerTitleAlign: 'center',
-    fontFamily: 'HelveticaNeue',
-    fontSize: 30,
-    fontWeight: '700',
-    // lineHeight: 40,
-    color: '#3F414E',
-    // headerRight: () => (
-    //   <TouchableOpacity
-    //     onPress={() => navigation.navigate('MapSearch', {results: results})}>
-    //     <Icon name="map-outline" size={25} />
-    //   </TouchableOpacity>
-    // ),
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 };
 
@@ -155,6 +151,7 @@ const styles = StyleSheet.create({
     color: 'red',
     marginLeft: 15,
     marginTop: 15,
+    textAlign: 'center',
   },
   text: {marginLeft: 10},
 });

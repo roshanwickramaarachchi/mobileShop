@@ -51,4 +51,18 @@ const ShopMapScreen = ({navigation}) => {
   );
 };
 
+ShopMapScreen.navigationOptions = () => {
+  return {
+    title: 'Map Screen',
+    headerTitleAlign: 'center',
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  };
+};
+
 export default ShopMapScreen;

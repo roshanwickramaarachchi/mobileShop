@@ -98,10 +98,13 @@ AdminUserCreateScreen.navigationOptions = () => {
   return {
     title: 'User Create Screen',
     headerTitleAlign: 'center',
-    // headerTitleStyle: {
-    //   textAlign: 'center',
-    //   flex:1,
-    // },
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 };
 
@@ -113,9 +116,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 5,
     margin: 5,
+    borderRadius: 15,
+    marginLeft: 5,
+    marginRight: 5,
   },
   label: {
-    fontSize: 20,
     marginBottom: 10,
     marginLeft: 5,
   },

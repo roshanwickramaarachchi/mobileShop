@@ -51,7 +51,7 @@ const PhoneSearchScreen = () => {
         // },
       });
       setResults(response.data.data);
-      console.log(response.data);
+      // console.log(response.data);
       console.log('success get phone data:');
       setIsLoading(false); // for loading spinner
     } catch (err) {
@@ -72,7 +72,7 @@ const PhoneSearchScreen = () => {
       {/* loading spinner it will run until api calle finish */}
       <Spinner
         visible={isLoading}
-        textContent={'Loading...'}
+        // textContent={'Loading...'}
         textStyle={styles.spinnerTextStyle}
       />
 
@@ -133,15 +133,13 @@ PhoneSearchScreen.navigationOptions = () => {
   return {
     title: 'Phone Search Screen',
     headerTitleAlign: 'center',
-    fontFamily: 'HelveticaNeue',
-    fontSize: 30,
-    fontWeight: '700',
-    // lineHeight: 40,
-    color: '#3F414E',
-    // headerTitleStyle: {
-    //   textAlign: 'center',
-    //   flex:1,
-    // },
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 };
 
@@ -161,6 +159,7 @@ const styles = StyleSheet.create({
     color: 'red',
     marginLeft: 15,
     marginTop: 15,
+    textAlign: 'center',
   },
   text: {marginLeft: 10},
 });

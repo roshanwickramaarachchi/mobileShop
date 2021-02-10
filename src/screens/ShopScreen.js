@@ -75,10 +75,13 @@ ShopScreen.navigationOptions = () => {
   return {
     title: 'Shop Screen',
     headerTitleAlign: 'center',
-    // headerTitleStyle: {
-    //   textAlign: 'center',
-    //   flex:1,
-    // },
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 };
 
@@ -105,13 +108,7 @@ const styles = StyleSheet.create({
   reviewContainer: {
     marginLeft: 10,
     marginTop: 10,
-  },
-  errorMesssage: {
-    fontSize: 16,
-    color: 'red',
-    marginLeft: 15,
-    marginTop: 15,
-  },
+  },  
 });
 
 export default ShopScreen;

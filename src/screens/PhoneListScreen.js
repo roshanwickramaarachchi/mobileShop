@@ -57,9 +57,12 @@ const PhoneListScreen = ({navigation}) => {
         data={phoneResult}
         keyExtractor={(result) => result._id}
         renderItem={({item}) => {
+          // console.log(item)
           return (
             <TouchableOpacity
-              onPress={() => navigation.navigate('Phone', {id: item._id})}>
+              // onPress={() => navigation.navigate('Phone', {id: item._id})}
+              onPress={() => navigation.navigate('Phone', {phoneData: item})}
+              >                
               <PhonesResultsDetail result={item} />
             </TouchableOpacity>
           );

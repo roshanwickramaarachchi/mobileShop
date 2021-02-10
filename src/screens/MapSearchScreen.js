@@ -107,7 +107,7 @@ const MapSearchScreen = ({navigation}) => {
       {/* loading spinner it will run until api calle finish */}
       <Spinner
         visible={isLoading}
-        textContent={'Loading...'}
+        // textContent={'Loading...'}
         textStyle={styles.spinnerTextStyle}
       />
 
@@ -159,6 +159,13 @@ MapSearchScreen.navigationOptions = ({navigation}) => {
   return {
     title: 'Map Screen',
     headerTitleAlign: 'center',
+    headerStyle: {
+      backgroundColor: '#0f8bf1',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 };
 
@@ -209,6 +216,13 @@ const styles = StyleSheet.create({
   calloutImage: {
     width: '100%',
     height: 80,
+  },
+  errorMesssage: {
+    fontSize: 16,
+    color: 'red',
+    marginLeft: 15,
+    marginTop: 15,
+    textAlign: 'center',
   },
 });
 
