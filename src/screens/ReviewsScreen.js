@@ -39,7 +39,7 @@ const ReviewsScreen = ({navigation}) => {
       console.log(userData.data.data._id);
       const response = await axios({
         method: 'get',
-        url: `${BASE_URL}/api/v1/reviews?bootcamp=${shopId}&user=${userData.data.data._id}`,
+        url: `${BASE_URL}/api/v1/reviews?shop=${shopId}&user=${userData.data.data._id}`,
       });
 
       setloggedUserReview(response.data.data[0]);
@@ -61,7 +61,7 @@ const ReviewsScreen = ({navigation}) => {
       setIsLoading(true); // for loading spinner
       const response = await axios({
         method: 'get',
-        url: `${BASE_URL}/api/v1/bootcamps/${shopId}/reviews`,
+        url: `${BASE_URL}/api/v1/shops/${shopId}/reviews`,
       });
       //console.log(response.data.data);
       setReviews(response.data.data);

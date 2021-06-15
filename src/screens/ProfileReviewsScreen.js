@@ -27,7 +27,7 @@ const ProfileReviewsScreen = ({navigation}) => {
       setIsLoading(true); // for loading spinner
       const response = await axios({
         method: 'get',
-        url: `${BASE_URL}/api/v1/bootcamps/${shopId}/reviews`,
+        url: `${BASE_URL}/api/v1/shops/${shopId}/reviews`,
       });
       //console.log(response.data.data);
       setReviews(response.data.data);

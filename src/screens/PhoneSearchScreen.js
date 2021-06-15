@@ -45,7 +45,7 @@ const PhoneSearchScreen = () => {
       setIsLoading(true); // for loading spinner
       const response = await axios({
         method: 'get',
-        url: `${BASE_URL}/api/v1/courses?${searchKeyword}=${searchTerm}`,
+        url: `${BASE_URL}/api/v1/phones?${searchKeyword}=${searchTerm}`,
         // params: {
         //   town: searchTerm,
         // },

@@ -77,7 +77,7 @@ const ShopEditScreen = ({navigation}) => {
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'put',
-        url: `${BASE_URL}/api/v1/bootcamps/${shopData._id}`,
+        url: `${BASE_URL}/api/v1/shops/${shopData._id}`,
         headers: {
           //'Content-Type': 'application/json',
           Authorization: 'Bearer ' + token,

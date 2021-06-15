@@ -14,9 +14,7 @@ const PhoneListScreen = ({navigation}) => {
   const getPhoneResult = async (id) => {
     setIsLoading(true); // for loading spinner
     try {
-      const response = await mobileShopApi.get(
-        `/api/v1/bootcamps/${id}/courses`,
-      );
+      const response = await mobileShopApi.get(`/api/v1/shops/${id}/phones`);
       setPhoneResult(response.data.data);
       setErrorMessage('');
       setIsLoading(false); // for loading spinner
@@ -61,8 +59,7 @@ const PhoneListScreen = ({navigation}) => {
           return (
             <TouchableOpacity
               // onPress={() => navigation.navigate('Phone', {id: item._id})}
-              onPress={() => navigation.navigate('Phone', {phoneData: item})}
-              >                
+              onPress={() => navigation.navigate('Phone', {phoneData: item})}>
               <PhonesResultsDetail result={item} />
             </TouchableOpacity>
           );

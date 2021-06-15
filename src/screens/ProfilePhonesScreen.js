@@ -24,7 +24,7 @@ const ProfilePhoneScreen = ({navigation}) => {
     try {
       const response = await axios({
         method: 'get',
-        url: `${BASE_URL}/api/v1/bootcamps/${shopId}/courses`,
+        url: `${BASE_URL}/api/v1/shops/${shopId}/phones`,
       });
       //console.log(response);
       console.log('success get mobile list, no of phones: ');

@@ -1,3 +1,3 @@
-const BASE_URL = 'https://bad-jellyfish-89.loca.lt';
+const BASE_URL = 'https://sweet-grasshopper-69.loca.lt';
 
 export {BASE_URL};

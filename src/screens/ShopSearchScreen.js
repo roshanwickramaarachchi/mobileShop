@@ -30,7 +30,7 @@ const ShopSearchScreen = ({navigation}) => {
       setIsLoading(true); // for loading spinner
       const response = await axios({
         method: 'get',
-        url: `${BASE_URL}/api/v1/bootcamps?${searchKeyword}=${searchTerm}`,
+        url: `${BASE_URL}/api/v1/shops?${searchKeyword}=${searchTerm}`,
         // params: {
         //   town: searchTerm,
         // },

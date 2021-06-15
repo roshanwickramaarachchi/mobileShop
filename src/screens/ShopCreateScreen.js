@@ -56,7 +56,7 @@ const ShopCreateScreen = ({navigation}) => {
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'post',
-        url: `${BASE_URL}/api/v1/bootcamps`,
+        url: `${BASE_URL}/api/v1/shops`,
         data: {
           image,
           name,

@@ -95,7 +95,7 @@ const ProfileScreen = ({navigation}) => {
       // calling api get logged user created shop data
       const response = await axios({
         method: 'get',
-        url: `${BASE_URL}/api/v1/bootcamps`,
+        url: `${BASE_URL}/api/v1/shops`,
         params: {
           user: userData.data.data._id,
         },
@@ -124,7 +124,7 @@ const ProfileScreen = ({navigation}) => {
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'delete',
-        url: `${BASE_URL}/api/v1/bootcamps/${shopData._id}`,
+        url: `${BASE_URL}/api/v1/shops/${shopData._id}`,
         headers: {
           Authorization: 'Bearer ' + token,
         },

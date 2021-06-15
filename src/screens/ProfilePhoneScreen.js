@@ -25,7 +25,7 @@ const ProfilePhoneScreen = ({navigation}) => {
     try {
       const response = await axios({
         method: 'get',
-        url: `${BASE_URL}/api/v1/courses/${phoneId}`,
+        url: `${BASE_URL}/api/v1/phones/${phoneId}`,
       });
       //console.log(response.data.data);
       console.log(
@@ -53,7 +53,7 @@ const ProfilePhoneScreen = ({navigation}) => {
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'delete',
-        url: `${BASE_URL}/api/v1/courses/${phoneId}`,
+        url: `${BASE_URL}/api/v1/phones/${phoneId}`,
         headers: {
           Authorization: 'Bearer ' + token,
         },

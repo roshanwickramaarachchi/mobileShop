@@ -42,7 +42,7 @@ const PhoneEditScreen = ({navigation}) => {
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'put',
-        url: `${BASE_URL}/api/v1/courses/${phoneData._id}`,
+        url: `${BASE_URL}/api/v1/phones/${phoneData._id}`,
         data: {
           image,
           price,

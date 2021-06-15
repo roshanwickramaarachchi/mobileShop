@@ -37,7 +37,7 @@ const PhoneCreateScreen = ({navigation}) => {
       var token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'post',
-        url: `${BASE_URL}/api/v1/bootcamps/${shopId}/courses`,
+        url: `${BASE_URL}/api/v1/shops/${shopId}/phones`,
         data: {
           image,
           price,

@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import {View, StyleSheet, Image, ScrollView} from 'react-native';
 import {Button} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {images} from '../../constants';
 
 const SearchScreen = ({navigation}) => {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View >
         <Image source={images.searchScreen} style={styles.image}/>
       </View>
@@ -22,7 +22,7 @@ const SearchScreen = ({navigation}) => {
           onPress={() => navigation.navigate('PhoneSearch')}
         />
       </Spacer>
-    </View>
+    </ScrollView>
   );
 };
 

@@ -25,19 +25,19 @@ const MapSearchScreen = ({navigation}) => {
 
   // console.log(shopsData);
 
-  // get all shop data, 
+  // get all shop data,
   const getAllShopsData = async () => {
     try {
       setIsLoading(true); // for loading spinner
       const response = await axios({
         method: 'get',
-        url: `${BASE_URL}/api/v1/bootcamps`,
+        url: `${BASE_URL}/api/v1/shops`,
         // params: {
         //   town: searchTerm,
         // },
       });
       setShopsData(response.data.data);
-      //console.log(response.data);
+      // console.log(response.data.data);
       console.log('success get shops data:');
       setIsLoading(false); // for loading spinner
     } catch (err) {
